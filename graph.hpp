@@ -1,5 +1,5 @@
 #include <vector>
-#include <LinkedList.hpp>
+#include <linked_list.hpp>
 #include <stack.hpp>
 
 class Graph {

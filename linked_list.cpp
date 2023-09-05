@@ -1,4 +1,4 @@
-#include "LinkedList.hpp"
+#include <linked_list.hpp>
 
 template<class T>
 LinkedList<T>::~LinkedList() {

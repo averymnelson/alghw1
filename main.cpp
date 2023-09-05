@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <LinkedList.hpp>
+#include <linked_list.hpp>
 #include <graph.hpp> 
 #include <string>
 #include <map>
