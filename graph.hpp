@@ -1,6 +1,6 @@
-#include <vector>;
-#include "LinkedList.hpp"
-#include "stack.hpp"
+#include <vector>
+#include <LinkedList.hpp>
+#include <stack.hpp>
 
 class Graph {
  private:
