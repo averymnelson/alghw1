@@ -1,20 +1,22 @@
+#include "LinkedList.hpp"
+
 template<class T>
-struct LinkedListNode {
- T value;
- LinkedListNode<T> *next;
- LinkedListNode<T> *prev;
- LinkedListNode(T value = 0, LinkedListNode<T>* next = NULL, LinkedListNode<T> *prev = NULL);
- ~LinkedListNode();
-};
+LinkedList<T>::~LinkedList() {
+ // YOUR CODE HERE
+}
 template<class T>
-class LinkedList {
- private:
- LinkedListNode<T> *root;
- public:
- LinkedList();
- ~LinkedList();
- LinkedListNode<T>* insert(T value);
- LinkedListNode<T>* find(T value);
- LinkedListNode<T>* remove(T value);
- int size();
-};
+LinkedListNode<T>* LinkedList<T>::insert(T value) {
+ // YOUR CODE HERE
+}
+template<class T>
+LinkedListNode<T>* LinkedList<T>::find(T value) {
+ // YOUR CODE HERE
+}
+template<class T>
+LinkedListNode<T>* LinkedList<T>::remove(T value) {
+ // YOUR CODE HERE
+}
+template<class T>
+int LinkedList<T>::size() {
+ // YOUR CODE HERE
+}
