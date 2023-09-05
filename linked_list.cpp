@@ -2,7 +2,6 @@
 
 template<class T>
 LinkedList<T>::~LinkedList() {
- // YOUR CODE HERE
 }
 template<class T>
 LinkedListNode<T>* LinkedList<T>::insert(T value) {
