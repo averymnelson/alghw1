@@ -19,13 +19,20 @@ Stack<T>::Stack() {
 
 template<class T>
 Stack<T>::~Stack() {
-    // YOUR CODE HERE 
+    while (head != NULL)
+   {
+      StackNode *Temp = head;
+      head = head->next;
+      delete Temp;
+   }
+
+   head = NULL;
 }
 
 template<class T>
 bool Stack<T>::empty() {
     // YOUR CODE HERE
-    return true;
+    return (Stack.empty());
 }
 
 template<class T>
