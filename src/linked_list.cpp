@@ -26,12 +26,14 @@ LinkedList<T>::~LinkedList() {
 
 template<class T>
 LinkedListNode<T>* LinkedList<T>::insert(T value) {
-    // YOUR CODE HERE
+ // code to insert at head or tail depending on answer
+ // node by search value
+ // add to node?
 }
-
 template<class T>
 LinkedListNode<T>* LinkedList<T>::find(T value) {
-    // YOUR CODE HERE
+ // DFS
+ // return node
 }
 
 template<class T>
@@ -41,7 +43,7 @@ LinkedListNode<T>* LinkedList<T>::remove(T value) {
 
 template<class T>
 int LinkedList<T>::size() {
-    // YOUR CODE HERE 
+ // traverse list, keep counter variable.
 }
 
 template class LinkedListNode<int>;
