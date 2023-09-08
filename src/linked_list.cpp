@@ -38,19 +38,19 @@ LinkedListNode<T>* LinkedList<T>::find(T value) {
  // DFS
  // return node
  //Walk the linked list
- LinkedListNode *curr = root; 
+ LinkedListNode *curr = root;
  while((curr!=NULL) && (curr->value != value)){
     curr = curr->value;
     //If result is found
     if(curr->value == value){
-        cout << "Value found\n";
-        cout << *curr;
-        return LinkedListNode;
+        std::cout << "Value found\n";
+        std::cout << *curr;
+        return curr;
     }
  }
  //No results found
  if(curr == NULL){
-    cout << "No results found\n"
+    std::cout << "No results found\n"<<std::endl;
     return;
  }
 

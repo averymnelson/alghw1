@@ -31,7 +31,7 @@ Stack<T>::~Stack() {
 
 template<class T>
 bool Stack<T>::empty() {
-    return (Stack.empty());
+    return (Stack().empty());
 }
 
 template<class T>
