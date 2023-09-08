@@ -29,16 +29,41 @@ LinkedListNode<T>* LinkedList<T>::insert(T value) {
  // code to insert at head or tail depending on answer
  // node by search value
  // add to node?
+    LinkedListNode *ptr = new LinkedListNode(value);
+    ptr->root;
+    root = ptr;
 }
 template<class T>
 LinkedListNode<T>* LinkedList<T>::find(T value) {
  // DFS
  // return node
+ //Walk the linked list
+ LinkedListNode *curr = root; 
+ while((curr!=NULL) && (curr->value != value)){
+    curr = curr->value;
+    //If result is found
+    if(curr->value == value){
+        cout << "Value found\n";
+        cout << *curr;
+        return LinkedListNode;
+    }
+ }
+ //No results found
+ if(curr == NULL){
+    cout << "No results found\n"
+    return;
+ }
+
 }
 
 template<class T>
 LinkedListNode<T>* LinkedList<T>::remove(T value) {
     // YOUR CODE HERE
+    //Walk the list until matching value found
+    find(value);
+    LinkedListNode *tmp = root;
+    delete tmp;
+
 }
 
 template<class T>
