@@ -31,21 +31,27 @@ Stack<T>::~Stack() {
 
 template<class T>
 bool Stack<T>::empty() {
-    // YOUR CODE HERE
     return (Stack.empty());
 }
 
 template<class T>
 T Stack<T>::pop() {
     T value = this->head->value;
-    // YOUR CODE HERE
+    StackNode *p = head;
+    head = head->next;
+    delete p;
     return value;
 }
 
 template<class T>
 void Stack<T>::push(T value) {
     StackNode<T> *p = new StackNode<T>(value, NULL, NULL);
-    // YOUR CODE HERE
+    if (p == NULL){
+        return;
+    }
+    p->value = value;
+    p->next = head;
+    head = p;
 }
 
 template class Stack<int>;
