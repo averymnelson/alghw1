@@ -59,24 +59,17 @@ LinkedListNode<T>* LinkedList<T>::find(T value) {
  // return node
  //Walk the linked list
  LinkedListNode<T> *curr = this->root;
- while(curr!=NULL){
-    //curr = curr->value;
-    //If result is found
-    if(curr->value == value){
-        std::cout << "Value found\n";
-        //std::cout << *curr;
-        break;
-        //return curr;
-    }
-
+ while(curr != NULL){
+    if(curr->value == value) break;
+    curr = curr->next;
  }
- //return curr;
+ return curr;
  //No results found
  //if(curr == NULL){
    // std::cout << "Null node\n"<<std::endl;
     //return;
  //}
-return curr;
+//return curr;
 }
 
 template<class T>
