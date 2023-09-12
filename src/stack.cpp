@@ -51,7 +51,7 @@ T Stack<T>::pop() {
 template<class T>
 void Stack<T>::push(T value) {
     StackNode<T> *temp = new StackNode<T>(value, NULL, NULL);
-    if (temp->tail == NULL){
+    if (this->tail == NULL){
         this->head = this->tail = temp;
     }else{
         this->tail->next = temp;
