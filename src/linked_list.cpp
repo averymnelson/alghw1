@@ -64,7 +64,7 @@ LinkedListNode<T>* LinkedList<T>::find(T value) {
     //If result is found
     if(curr->value == value){
         std::cout << "Value found\n";
-        std::cout << *curr;
+        //std::cout << *curr;
         break;
         //return curr;
     }
