@@ -21,6 +21,10 @@ LinkedList<T>::LinkedList() {
 template<class T>
 LinkedList<T>::~LinkedList() {
     // YOUR CODE HERE
+    LinkedListNode *ptr = root;
+    while(ptr != NULL){
+        delete ptr;
+    }
 }
 
 
