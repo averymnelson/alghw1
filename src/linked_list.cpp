@@ -68,13 +68,14 @@ LinkedListNode<T>* LinkedList<T>::find(T value) {
         break;
         //return curr;
     }
+
  }
  //return curr;
  //No results found
- if(curr == NULL){
-    std::cout << "Null node\n"<<std::endl;
-    return;
- }
+ //if(curr == NULL){
+   // std::cout << "Null node\n"<<std::endl;
+    //return;
+ //}
 return curr;
 }
 
