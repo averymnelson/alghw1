@@ -21,7 +21,7 @@ template<class T>
 Stack<T>::~Stack() {
     while (head != NULL)
    {
-      StackNode *Temp = head;
+      StackNode<T> *Temp = head;
       head = head->next;
       delete Temp;
    }
@@ -37,21 +37,28 @@ bool Stack<T>::empty() {
 template<class T>
 T Stack<T>::pop() {
     T value = this->head->value;
-    StackNode *p = head;
-    head = head->next;
+    StackNode<T> *p = this->tail;
+    this->tail = this->tail->prev;
+    if (this->tail == NULL){
+        this->head = this->tail = NULL;
+    }else{
+        this->tail->next = NULL;
+    }
     delete p;
     return value;
 }
 
 template<class T>
 void Stack<T>::push(T value) {
-    StackNode<T> *p = new StackNode<T>(value, NULL, NULL);
-    if (p == NULL){
-        return;
+    StackNode<T> *temp = new StackNode<T>(value, NULL, NULL);
+    if (p->tail == NULL){
+        this->head = this->tail = temp;
+    }else{
+        this->tail->next = temp;
+        p->prev = this->tail;
+        this->tail = temp;
     }
-    p->value = value;
-    p->next = head;
-    head = p;
+
 }
 
 template class Stack<int>;
