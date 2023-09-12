@@ -31,12 +31,16 @@ Stack<T>::~Stack() {
 
 template<class T>
 bool Stack<T>::empty() {
-    return (Stack().empty());
+    if (this->tail == NULL and this->head == NULL){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 template<class T>
 T Stack<T>::pop() {
-    T value = this->head->value;
+    T value = this->tail->value;
     StackNode<T> *p = this->tail;
     this->tail = this->tail->prev;
     if (this->tail == NULL){
