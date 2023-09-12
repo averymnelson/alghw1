@@ -69,13 +69,13 @@ LinkedListNode<T>* LinkedList<T>::find(T value) {
         //return curr;
     }
  }
- return curr;
+ //return curr;
  //No results found
  if(curr == NULL){
     std::cout << "Null node\n"<<std::endl;
     return;
  }
-
+return curr;
 }
 
 template<class T>
