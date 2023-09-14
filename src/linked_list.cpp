@@ -20,12 +20,11 @@ LinkedList<T>::LinkedList() {
 
 template<class T>
 LinkedList<T>::~LinkedList() {
-    // YOUR CODE HERE
-    //p is the root of the linked list
-    //while p is not a NULL
-
+    //create node pointer to the root
     LinkedListNode<T>* ptr = this->root;
+    //walk the list while the pointer is not null
     while(ptr != NULL){
+        //create a temporary pointer to the next value
         LinkedListNode<T>* temp = ptr->next;
         delete ptr;
         ptr = temp;
@@ -35,18 +34,19 @@ LinkedList<T>::~LinkedList() {
 
 template<class T>
 LinkedListNode<T>* LinkedList<T>::insert(T value) {
- // code to insert at head or tail depending on answer
- // node by search value
- // add to node?
+    //create node pointer to the root
     LinkedListNode<T>* ptr = this->root;
+    //Walk the list while pointer is not null
     while(ptr != NULL){
+        //value is found in the list
         if(ptr->value == value)
             return ptr;
         ptr = ptr->next;
     }
-
+    //create a new node to insert
     LinkedListNode<T> *node = new LinkedListNode<T>();
     node->value = value;
+    //inserting at the head of the list
     node->next = this->root;
     this->root = node;
     return this->root;
@@ -55,30 +55,19 @@ LinkedListNode<T>* LinkedList<T>::insert(T value) {
 
 template<class T>
 LinkedListNode<T>* LinkedList<T>::find(T value) {
- // DFS
- // return node
- //Walk the linked list
+ //create node pointer to the root
  LinkedListNode<T> *curr = this->root;
  while(curr != NULL){
+    //value is found in the list
     if(curr->value == value) break;
     curr = curr->next;
  }
  return curr;
- //No results found
- //if(curr == NULL){
-   // std::cout << "Null node\n"<<std::endl;
-    //return;
- //}
-//return curr;
 }
 
 template<class T>
 LinkedListNode<T>* LinkedList<T>::remove(T value) {
-    // YOUR CODE HERE
-    //Walk the list until matching value found
-    //find(value);
-    //LinkedListNode *tmp = root;
-    //delete tmp;
+    //create node pointer to the root and curr pointer to move along the list
     LinkedListNode<T>* ptr = this->root;
     LinkedListNode<T>* curr = NULL;
     while(ptr != NULL){
