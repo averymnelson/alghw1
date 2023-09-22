@@ -1,0 +1,22 @@
+In the second homework, we are going to implement BFS and DFS that aims to find a path 
+from a given building to another building. For graduate student, you are required to 
+implement an additional question which is finding the articulation points and bridges on 
+the graph. The map is represented as a graph structure in which each node represents one 
+building (or a landmark), and an undirected edge between two nodes represents the path 
+between buildings/landmarks. A list of edges in a graph is represented by an adjacency list1
+that is implemented by a linked list. The BFS algorithm is implemented by a queue and the 
+DFS is implemented by either a stack or a recursive function. In this assignment, we 
+provide you the implementation of linked list, queue, and stack.
+
+In this assignment, you are REQUIRED to implement BFS, DFS, Finding Articulation 
+Points and Bridges (Graduate Students) algorithms.
+
+Already implemented:
+Queue: initialize, push to tail, pop head, check if empty (true if empty)
+Stack: initialize, push to head, pop head, check if empty
+Graph: intialize with n vertices, insert edge
+
+To implement:
+bfs in bfs. ignore number of building parameter. return shortest path number of steps. store path in vector int. given graph, start vertex, dest vertex. 
+dfs in dfs. check path nodes against num building. return path length? store path in vector int. given graph, start vertex, dest vertex. 
+rdfs in rdfs. check path nodes against num building. return path length. store path in vector int. given graph, start vertex, dest vertex. 
