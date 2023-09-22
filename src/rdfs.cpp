@@ -12,7 +12,21 @@ for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next) { // iterate ov
 int rdfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path) {
     int N = G.n; // Number of nodes in the graph
     
-    // YOUR CODE HERE
+//     DFS(G, u)
+// {
+// u.visited = true
+// for each v ∈ G.Adj[u]
+// if v.visited == false
+// DFS(G,v)
+// }
+// init()
+// {
+// for each u ∈ G
+// u.visited = false
+//  for each u ∈ G
+// DFS(G, u)
+// }
+
 
     return 0; //You do not need to count the number of paths in this question, therefore, just simply return 0
 }
