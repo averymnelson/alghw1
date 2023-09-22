@@ -2,6 +2,13 @@
 
 
 /* Template Code 
+Five steps: 
+create a queue Q
+mark v as visited and put v into Q
+while Q is non-empty
+    remove the head u of Q
+    mark and enqueue all (unvisited) neighbors of u
+
 To iterate over the adjancy nodes of u, you can use the following template code 
 int numberOfAdjacencyNodes = G.e[u].size(); // Get number of adjancy nodes of u 
 LinkedListNode<int> *p = G.e[u].getRoot(); // Get the head point of the linked list
