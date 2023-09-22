@@ -1,4 +1,5 @@
 #include <search.hpp>
+#include <vector>
 
 /*
 To iterate over the adjancy nodes of u, you can use the following template code 
@@ -12,6 +13,27 @@ for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next) { // iterate ov
 
 int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path) {
     int N = G.n; // Number of nodes in the graph
+    int p = 0;
+    std::string pw = "";
+    std::vector<bool> visit(N, false);
+    Stack<int> s;
+    s.push(start);
+    while(!s.empty()){
+        int st = s.pop();
+        if(!visit[st]){
+            std::cout<<st<<" ";
+            p+=1;
+            pw+=st;
+            pw+=" ";
+            visit[st] = true;
+        }
+        for (auto i : G.e[st]){
+            if (!visit[*i]){
+                s.push(*i);
+            }
+        }
+    }
+
     
 //     DFS(G,v) ( v is the vertex where the search starts ) 
 // Stack S := {}; ( start with an empty stack ) 
