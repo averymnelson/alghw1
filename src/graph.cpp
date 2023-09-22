@@ -11,41 +11,13 @@ Graph::~Graph() {
 
 void Graph::insertEdge(int u, int v, bool directed) {
     this->e[u].insert(v);
-    if (!directed)
+    if (not directed)
         this->e[v].insert(u);
 }
 
-std::vector<int> Graph::search(int start, int destination) {
-    Stack<int> stack;
-    std::vector<int> mask(this->n, 0);
-    std::vector<int> trace(this->n, -1);
-    stack.push(start);
-    mask[start] = 1;
-    while (!stack.empty()) {
-        int u = stack.pop();
-        if (u == destination)
-            break;
-        int numberOfAdjacencyNodes = this->e[u].size();
-        LinkedListNode<int> *p = this->e[u].root;
-        for (int i = 0; i < numberOfAdjacencyNodes; i += 1) {
-            int v = p->value;
-            if (mask[v] == 0) {
-                stack.push(v);
-                trace[v] = u;
-                mask[v] = 1;
-            }
-            p = p->next;
-        }
-    }
-
-    std::vector<int> path;
-    int u = destination;
-    while (u != -1) {
-        path.push_back(u);
-        u = trace[u];
-    }
-
-    std::reverse(path.begin(), path.end());
-
-    return path;
-}
+int Graph::search(int start, int destination, int numberOfBuilding, int (*searchfn)(Graph &, int, int, int, std::vector<int>&), std::vector<int> &path) {
+    path.clear();
+    int count = searchfn(*this, start, destination, numberOfBuilding, path); 
+    
+    return count;
+} 

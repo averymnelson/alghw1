@@ -1,68 +1,61 @@
 #include <stack.hpp>
 
 template<class T>
-StackNode<T>::StackNode(T value, StackNode<T> *next, StackNode<T> *prev) {
+StackNode<T>::StackNode(T value, StackNode<T> *next) {
     this->value = value;
     this->next = next;
-    this->prev = prev;
 }
 
 template<class T>
 StackNode<T>::~StackNode() {
-    this->next = this->prev = NULL;
+    this->next = NULL;
 }
 
 template<class T>
 Stack<T>::Stack() {
-    this->head = this->tail = NULL;
+    this->head = NULL;
 }
 
 template<class T>
 Stack<T>::~Stack() {
-    while (head != NULL)
-   {
-      StackNode<T> *Temp = head;
-      head = head->next;
-      delete Temp;
-   }
-
-   head = NULL;
+    StackNode<T> *p = this->head;
+    while (p != NULL) {
+        StackNode<T> *q = p->next;
+        delete p;
+        p = q;
+    }
+    this->head = NULL;
 }
 
 template<class T>
 bool Stack<T>::empty() {
-    if (this->tail == NULL and this->head == NULL){
+    if (this->head == NULL)
         return true;
-    }else{
+    else
         return false;
-    }
 }
 
 template<class T>
 T Stack<T>::pop() {
-    T value = this->tail->value;
-    StackNode<T> *p = this->tail;
-    this->tail = this->tail->prev;
-    if (this->tail == NULL){
-        this->head = this->tail = NULL;
-    }else{
-        this->tail->next = NULL;
-    }
+    T value = this->head->value;
+    StackNode<T> *p = this->head;
+    if (p->next == NULL)
+        this->head = NULL;
+    else
+        this->head = p->next;
     delete p;
     return value;
 }
 
 template<class T>
 void Stack<T>::push(T value) {
-    StackNode<T> *temp = new StackNode<T>(value, NULL, NULL);
-    if (this->tail == NULL){
-        this->head = this->tail = temp;
-    }else{
-        this->tail->next = temp;
-        temp->prev = this->tail;
-        this->tail = temp;
+    StackNode<T> *p = new StackNode<T>(value, NULL);
+    if (this->head == NULL) {
+        this->head = p; 
+    } else {
+        p->next = this->head;
+        this->head = p;
     }
-
 }
 
 template class Stack<int>;

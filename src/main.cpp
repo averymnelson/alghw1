@@ -1,102 +1,231 @@
 #include <iostream>
 #include <vector>
 #include <linked_list.hpp> 
-#include <stack.hpp>
 #include <graph.hpp> 
 #include <string>
 #include <map>
 #include <fstream>
+#include <search.hpp>
 
 #ifdef OPENCV
 #include <opencv2/opencv.hpp>
 #endif
 
-bool testLinkedList() {
-    LinkedList<int> linkedList;
-    linkedList.insert(10);
-    linkedList.insert(100);
-
-    if (linkedList.find(10))
-        std::cout << "10 is in the linked list\n";
-    else
-        return false;
-
-    if (linkedList.find(20))
-        return false;
-    else
-        std::cout << "20 is not in the linked list\n";
-    
-
-    if (linkedList.find(100))
-        std::cout << "100 is in the linked list\n";
-    else
-        return false;
-
-    if (linkedList.size() == 2)
-        std::cout << "The linked list has 2 nodes\n";
-    else
-        return false;
-
-    linkedList.remove(100);
-    
-    if (linkedList.find(100))
-        return false;
-    else
-        std::cout << "100 is not in the linked list\n";
-
-    if (linkedList.size() == 1)
-        std::cout << "The linked list has 1 node\n";
-    else
-        return false;
-
-    return true;
-}
-
-bool testStack() {
-    Stack<int> stack;
-
-    for (int i = 0; i < 5; ++i)
-        stack.push(i);
-
-    if (stack.empty())
-        return false;
-    else
-        std::cout << "Stack is not empty\n";
-
-    for (int i = 4; i >= 0; --i) {
-        if (stack.pop() == i)
-            std::cout << "Remove tail node in stack successfully\n";
-        else
-            return false; 
-    }
-   
-    if (stack.empty())
-        std::cout << "Stack is empty\n";
-    else
-        return false;
-    
-    return true;
-}
-
 bool testGraph() {
-    Graph G(6);
+    Graph G(7);
+
+    G.insertEdge(0, 1);
+    G.insertEdge(0, 5);
+    G.insertEdge(5, 6);
+    G.insertEdge(1, 2);
+    G.insertEdge(1, 2);
+    G.insertEdge(2, 3);
+    G.insertEdge(3, 4);
+    G.insertEdge(2, 4);
+    G.insertEdge(6, 4);
+
+    std::vector<std::string> algNames; algNames.clear();
+    algNames.push_back("bfs");
+    algNames.push_back("rdfs");
+    algNames.push_back("dfs");
+    int numberOfBuilding = 4;
+
+    for (int idx = 0; idx < algNames.size(); ++idx) {
+        std::string algName = algNames[idx];
+
+        int (*searchfn)(Graph &, int, int, int, std::vector<int>&);
+        if (algName == "bfs")
+            searchfn = bfs;
+        else if (algName == "dfs")
+            searchfn = dfs;
+        else
+            searchfn = rdfs;
+
+        std::vector<int> path; path.clear();
+
+        int count = G.search(0, 4, numberOfBuilding, searchfn, path);
+
+        if (path.size() != 0 && path.front() == 0 && path.back() == 4) {
+            std::cout << "Path from 0 to 4 by " << algName << ": " ;
+            for (int i = 0; i < path.size(); ++i) 
+                std::cout << path[i] << " ";
+            std::cout << "\n";
+            std::cout << "Number of buildings in the path: " << path.size() << std::endl;
+            if (! (algName == "bfs" || path.size() <= numberOfBuilding) ) {
+                 std::cout << "[WARNING] The number of building in your path including start and destination produced by your " << algName << " was out of the number of buildings allowed in the requirement. You will not receive a full grade in this case. You may have to improve your implementation!" << std::endl;
+
+            }
+            if ( algName == "bfs") {
+                std::cout << "The total number of shortest paths: " << count << std::endl;   
+                if (count != 2) {
+                    std::cout << "[WARNING] The number of shorest path produced by your " << algName << " was incorrect. There should be only two paths. You will not receive a full grade in this case. You may have to improve your implementation!" << std::endl;
+                }
+            }
+            std::cout << std::endl;
+            
+        } else {
+            std::cout << "It seems that your " << algName << " was implemented incorrectly" << std::endl;
+            return false;
+        }
+    }
+                
+    return true;
+}
+
+bool searchOnCampus(std::string start = "BELL", std::string destination = "HAPG") {
+    std::ifstream reader("assets/map_info.txt");
+    int n, m;
+    reader >> n >> m;
+    std::map<std::string, int> name2index;
+    std::map<int, std::string> index2name;
+    std::vector<int> xs;
+    std::vector<int> ys;
+    for (int i = 0; i < n; ++i) {
+        int index, x, y;
+        std::string name;
+        reader >> index >> name >> x >> y;
+        xs.push_back(x);
+        ys.push_back(y);
+        name2index[name] = index;
+        index2name[index] = name;
+    }
+
+    std::vector<std::string> algNames; algNames.clear();
+    algNames.push_back("bfs");
+    algNames.push_back("rdfs");
+    algNames.push_back("dfs");
+
+    Graph G(n);
+    for (int i = 0; i < m; ++i) {
+        int u, v;
+        reader >> u >> v;
+        G.insertEdge(u, v);
+    }
+
+    int numberOfBuilding = 27;
+    std::vector<std::vector<int> > paths;
+
+    for (int idx = 0; idx < algNames.size(); ++idx) {
+
+        std::string algName = algNames[idx];
+        int (*searchfn)(Graph &, int, int, int, std::vector<int> &);
+        if (algName == "bfs")
+            searchfn = bfs;
+        else if (algName == "dfs")
+            searchfn = dfs;
+        else
+            searchfn = rdfs;
+
+        std::vector<int> path; path.clear();
+        int count = G.search(name2index[start], name2index[destination], numberOfBuilding, searchfn, path);
+
+        if (path.size() != 0 && path.front() == name2index[start] && path.back() == name2index[destination]) {
+            std::cout << "Path from " << start  << " to " << destination << " by the " << algName << " algorithm: " << start ;
+            for (int i = 1; i < path.size(); ++i)
+                std::cout << " -> " << index2name[path[i]];
+            std::cout << "\n";
+
+            std::cout << "Number of buildings in the path: " << path.size() << std::endl;
+
+            if (! (algName == "bfs" || path.size() <= numberOfBuilding) ) {
+                std::cout << "[WARNING] The number of building in your path including start and destination produced by your " << algName << " was out of the number of buildings allowed in the requirement. You will not receive a full grade in this case. You may have to improve your implementation!" << std::endl;
+            }
+
+            if ( algName == "bfs") {
+                std::cout << "The total number of shortest paths: " << count << std::endl;   
+            }
+
+            
+            paths.push_back(path);
+            std::cout << std::endl;
+        } else {
+            std::cout << "It seems that your " << algName << " was implemented incorrectly" << std::endl;
+            return false;
+        }
+    }
+
+       
+#ifdef OPENCV
+    std::vector<cv::Mat> images;
+    for (int idx = 0; idx < algNames.size(); ++idx) {
+        std::string algName = algNames[idx];
+        std::vector<int> path = paths[idx]; 
+
+        cv::Mat image = cv::imread("assets/map.png");
+        for (int i = 0; i < n; ++i) {
+            cv::circle(image, cv::Point(xs[i], ys[i]), 10, cv::Scalar(255, 0, 0), -1);
+            cv::putText(image, index2name[i],  cv::Point(xs[i], ys[i]-10),  cv::FONT_HERSHEY_DUPLEX, 0.7, cv::Scalar(255, 0, 0), 1);
+        }   
+        for (int i = 1; i < path.size(); ++i) 
+            cv::line(image, cv::Point(xs[path[i]], ys[path[i]]), cv::Point(xs[path[i-1]], ys[path[i-1]]), cv::Scalar(0, 255, 0), 4);
+
+        images.push_back(image);
+    }
+    cv::imshow("BFS", images[0]);
+    cv::imshow("Recursive DFS", images[1]);
+    cv::imshow("DFS", images[2]);
+    cv::waitKey(0);
+
+#else
+    std::cout << "You have to use OpenCV to visualize your map road\n";
+#endif
+
+    return true;
+}
+
+bool testArticulationPointsAndBridges() {
+    std::cout << "IF YOU ARE UNDERGRAD STUDENTS, PLEASE IGNORE THIS UNIT TEST OF FINDING ARTICULATION POINTS AND BRIDGES" << std::endl;
+    Graph G(17);
     G.insertEdge(0, 1);
     G.insertEdge(1, 2);
-    G.insertEdge(1, 3);
-    G.insertEdge(2, 4);
-    G.insertEdge(4, 3);
-    G.insertEdge(4, 5);
+    G.insertEdge(2, 3);
+    G.insertEdge(3, 5);
+    G.insertEdge(5, 4);
+    G.insertEdge(4, 0);
+    G.insertEdge(3, 6);
+    G.insertEdge(6, 7);
+    G.insertEdge(7, 9);
+    G.insertEdge(9, 10);
+    G.insertEdge(10, 11);
+    G.insertEdge(11, 8);
+    G.insertEdge(8, 6);
+    G.insertEdge(3, 12);
+    G.insertEdge(12, 13);
+    G.insertEdge(13, 14);
+    G.insertEdge(14, 15);
+    G.insertEdge(15, 16);
+    G.insertEdge(16, 12);
 
-    std::cout << "Path from 0 to 5: ";
-    std::vector<int> path = G.search(0, 5);
-    for (int i = 0; i < path.size(); ++i) 
-        std::cout << path[i] << " ";
-    std::cout << "\n";
+    std::vector<int> articulationPoints; articulationPoints.clear();
+    std::vector<std::pair<int, int> > bridges; bridges.clear(); 
+
+    findArticulationPointsAndBridges(G, articulationPoints, bridges);
     
+    if (articulationPoints.size() != 3) {
+        std::cout << "The number of articulation points is incorrect! There should be 3 articulation points." << std::endl;
+        return false;
+    }
+    if (bridges.size() != 2) {
+        std::cout << "The number of bridges is incorrect! There should be 2 bridges." << std::endl;
+        return false;
+    }
+
+    std::cout << "List of Articulation Points: ";
+    for (int i = 0; i < articulationPoints.size(); ++i)
+        std::cout << articulationPoints[i] << " ";
+    std::cout << std::endl;
+
+    std::cout << "List of Bridges: ";
+    for (int i = 0; i < bridges.size(); ++i)
+        std::cout << "(" << bridges[i].first  << ", " << bridges[i].second << ") ";
+    std::cout << std::endl;
+
     return true;
+
 }
 
-void searchOnCampus(std::string start = "BELL", std::string destination = "HAPG") {
+bool testArticulationPointsAndBridgesOnCampus() {
+    std::cout << "IF YOU ARE UNDERGRAD STUDENTS, PLEASE IGNORE THIS UNIT TEST OF FINDING ARTICULATION POINTS AND BRIDGES ON CAMPUS" << std::endl;
     std::ifstream reader("assets/map_info.txt");
     int n, m;
     reader >> n >> m;
@@ -115,72 +244,61 @@ void searchOnCampus(std::string start = "BELL", std::string destination = "HAPG"
     }
 
     Graph G(n);
-
     for (int i = 0; i < m; ++i) {
         int u, v;
         reader >> u >> v;
         G.insertEdge(u, v);
     }
 
-    std::vector<int> path = G.search(name2index[start], name2index[destination]);
+    std::vector<int> articulationPoints; articulationPoints.clear();
+    std::vector<std::pair<int, int> > bridges; bridges.clear(); 
 
-    std::cout << "Path from " << start  << " to " << " detination: " << start ;
-    for (int i = 1; i < path.size(); ++i)
-        std::cout << " -> " << index2name[path[i]];
+    findArticulationPointsAndBridges(G, articulationPoints, bridges);
     
-    std::cout << "\n";
+    std::cout << "List of Articulation Points on Campus: ";
+    for (int i = 0; i < articulationPoints.size(); ++i)
+        std::cout << index2name[articulationPoints[i]] << " ";
+    std::cout << std::endl;
 
-#ifdef OPENCV
-    cv::Mat image = cv::imread("assets/map.png");
-    
-    for (int i = 0; i < n; ++i) {
-        cv::circle(image, cv::Point(xs[i], ys[i]), 5, cv::Scalar(255, 0, 0), -1);
-        cv::putText(image, index2name[i],  cv::Point(xs[i], ys[i]-10),  cv::FONT_HERSHEY_DUPLEX, 0.7, cv::Scalar(255, 0, 0), 1);
-    }
+    std::cout << "List of Bridges on Campus: ";
+    for (int i = 0; i < bridges.size(); ++i)
+        std::cout << "(" << index2name[bridges[i].first]  << ", " << index2name[bridges[i].second] << ") ";
+    std::cout << std::endl;
 
-    for (int i = 0; i < path.size(); ++i) {
-        if (i > 0) 
-            cv::line(image, cv::Point(xs[path[i]], ys[path[i]]), cv::Point(xs[path[i-1]], ys[path[i-1]]), cv::Scalar(0, 255, 0), 4);
-    }
-    cv::imshow("Path from " + start + " to " + destination, image);
-    cv::waitKey(0);
-
-#else
-    std::cout << "You have to use OpenCV to visualize your map road\n";
-#endif
-
+    return true;
 
 }
-int main() {
-    if (testLinkedList()) {
-        std::cout << "Your linked list implementation is correct\n";
-    } else {
-        std::cout << "Your linked list implementation is incorrect\n";
-        return -1;
-    }
-    
-    std::cout << "\n\n";
-    
-    if (testStack()) {
-        std::cout << "Your stack mplementation is correct\n";
-    } else {
-        std::cout << "Your stack implementation is incorrect\n";
-        return -1;
-    }
-    
-    std::cout << "\n\n";
 
-    if (testGraph()) {
-        std::cout << "Your linked list and stack implementation is correct\n";
-    } else {
-        std::cout << "Your linked list and stack implementation is incorrect\n";
-        return -1;
-    }
-
-    std::cout << "\n\n";
+int main(int argc, char **args) {
     
-    searchOnCampus("RSWE", "WJWH");
+    if (!testArticulationPointsAndBridges()) {
+        std::cout << "Your findArticulationPointsandBridges implementation is incorrect!. If you are undergrad, please ignore this warning!" << std::endl;
+    }
 
     std::cout << "\n";
+
+    testArticulationPointsAndBridgesOnCampus(); 
     
+    std::cout << "\n\n";
+    
+
+    
+    std::cout << "Perform unit test on your searching implementation" << std::endl;
+    
+    if (!testGraph()) {
+        std::cout << "Your searching implementation is incorrect!" << std::endl;
+        return -1;
+    }
+    
+
+    std::cout << "\n\n";
+    
+    std::cout << "Perform unit test on your searching implementation on campus map" << std::endl;
+
+    if (!searchOnCampus("RSWE", "RCED")) {
+        std::cout << "Your searching implementation is incorrect!" << std::endl;
+        return -1;
+    }
+    
+    return 0;
 }

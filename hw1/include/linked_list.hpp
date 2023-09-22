@@ -23,7 +23,7 @@ class LinkedList {
          LinkedListNode<T>* remove(T value);
          int size();
 
-         LinkedListNode<T>* getRoot();
+         friend class Graph;
 };
 
 
