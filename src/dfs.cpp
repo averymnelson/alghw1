@@ -31,7 +31,9 @@ int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
             {
                 int v = p->value;
                 if (!visit[v])
+                    visit[v]=true;
                     s.push(v);
+
             }
         }
     }
