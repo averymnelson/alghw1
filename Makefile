@@ -6,7 +6,7 @@ CXX=g++
 LDFLAGS=''
 
 # Using OpenCV for Visualization
-OPENCV=1
+OPENCV=0
 OPENCV4=0
 
 ifeq ($(OPENCV), 1)
