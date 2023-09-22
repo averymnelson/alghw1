@@ -26,10 +26,12 @@ int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
             pw+=st;
             pw+=" ";
             visit[st] = true;
-        }
-        for (auto i : G.e[st]){
-            if (!visit[*i]){
-                s.push(*i);
+        int nAdjnodes = G.e[st].size();
+        LinkedListNode<int> *p = G.e[st].getRoot();
+        for (int i = 0; i<nAdjnodes; i++, p = p->next){
+                int v = p->value;
+                if (!visit[v])
+                    s.push(v);
             }
         }
     }
