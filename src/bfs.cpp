@@ -1,5 +1,5 @@
 #include <search.hpp>
-
+#include <vector>
 
 /* Template Code 
 Five steps: 
@@ -26,6 +26,43 @@ int bfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
 
     int N = G.n; // Number of nodes in the graph
     //YOUR CODE HERE 
+    int u = 0;
+
+    std::vector<bool> visit(N, false);
+    std::vector<int> trace(N, false);
+    Queue<int> q;
+    int numberOfAdjacencyNodes = G.e[u].size();
+    LinkedListNode<int> *p = G.e[u].getRoot();
+
+    for(int u = 0; u < N-1; u++){
+        visit[u] = false;
+        trace[u] = -1;
+    }
+    q.push(start);
+    visit[start] = true;
+    
+    while(!q.empty()){
+        u = q.pop();
+        if(u == destination){
+            return u;
+            //break;
+        }
+
+        for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next) { // iterate over each node
+            int v = p->value; // v is the adjvancy node of u
+             // YOUR CODE HERE
+             if(!visit[v]){
+                visit[v] = true;
+                trace[v] = u;
+                q.push(v);
+             }
+        }
+    }
+    u = destination;
+
+    while( u != -1){
+        u = trace[u];
+    }
     
     // Finally return the number of shorest paths
     return 0; // Modify this return value to the correct one 
