@@ -27,6 +27,34 @@ int rdfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector
 // DFS(G, u)
 // }
 
+// int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path) {
+//  int N = G.n; // Number of nodes in the graph
+//  for u = 0 to N – 1 do
+//  visited[u] = false
+//  trace[u] = -1
+//  end for
+//  Push start to stack
+//  visited[start]= true
+//  while stack is not empty do
+//  u = pop the top value of the stack
+//  if u is destination then
+//  stop while loop
+//  end if
+//  for v in the list of neighbor vertices of u do
+//  if visited[v] is false then
+//  visited[v] = true
+//  trace[v] = u
+//  Push v into stack
+//  end if
+//  end for
+//  end while
+//  u = destination
+//  while u != -1 do
+//  Insert u into the front of path
+//  u = trace[u]
+//  end while
+//  // How to limit the number of building in Recursive DFS and DFS?
+// }
 
     return 0; //You do not need to count the number of paths in this question, therefore, just simply return 0
 }
