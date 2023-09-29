@@ -34,7 +34,7 @@ int rdfsutil(Graph &G, int start, int destination, int numberOfBuilding, std::ve
     }
     }
     numps[path.size()]++;
-
+    path.clear();
     return 0;
 }
 
