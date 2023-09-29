@@ -5,7 +5,7 @@ int bfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
     path.clear();
     int N = G.n;
     bool sltn = false;
-    std::vector<int> stpath;
+    //std::vector<int> stpath;
     int u = 0; 
 
     std::vector<bool> visit(N, false);
@@ -35,13 +35,11 @@ int bfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
             if(dist[v]>(dist[u]+1)){
                 dist[v] = dist[u]+1;
                 paths[v]=paths[u];
-            }else if(dist[v] = (dist[u]+1)){
-                paths[v] = paths[u]+path[v];
+            }else if(dist[v] == (dist[u]+1)){
+                paths[v] = (paths[u]+path[v]);
             }
         }
     }
-
-    u = destination;
     if (!sltn){
         std::cout<<"These buildings do not appear to be connected."<<std::endl;
         return -1;
