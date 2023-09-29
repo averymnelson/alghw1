@@ -25,6 +25,8 @@ int bfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
     // Return the number of shortest path
 
     int N = G.n; // Number of nodes in the graph
+    int min = N;
+    std::vector<int> stpath;
     //YOUR CODE HERE 
     int u = 0; 
 
@@ -44,8 +46,12 @@ int bfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
     
     while(!q.empty()){
         int top = q.pop();
-        if(top == destination)
+        if(top == destination){
+            if(stpath.size()<min){
+                min = stpath.size();
+            }
             break;
+        }
 
         int numberOfAdjacencyNodes = G.e[top].size();
         LinkedListNode<int> *p = G.e[top].getRoot();
@@ -56,6 +62,7 @@ int bfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
              if(!visit[v]){
                 visit[v] = true;
                 trace[v] = top;
+                stpath.push_back(v);
                 q.push(v);
              }
         }
@@ -67,6 +74,8 @@ int bfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
         path.push_back(u);
         u = trace[u];
     }
+
+    std::reverse(path.begin(),path.end());
     
     // Finally return the number of shorest paths
     return u; // Modify this return value to the correct one 
