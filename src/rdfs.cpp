@@ -11,7 +11,6 @@ int rdfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector
 }
 int rdfsutil(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path, std::vector<bool> &visit, std::vector<int> &numps)
 {
-    path.clear();
     int N = G.n;
     visit[start] = true;
     if (path.size() > numberOfBuilding)
@@ -22,7 +21,7 @@ int rdfsutil(Graph &G, int start, int destination, int numberOfBuilding, std::ve
     if (start == destination)
     {
         path.push_back(start);
-    }
+    }else{
     int numberOfAdjacencyNodes = G.e[start].size();
     LinkedListNode<int> *p = G.e[start].getRoot();
     for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next)
@@ -32,6 +31,7 @@ int rdfsutil(Graph &G, int start, int destination, int numberOfBuilding, std::ve
         {
             rdfsutil(G, v, destination, numberOfBuilding, path, visit, numps);
         }
+    }
     }
     numps[path.size()]++;
 
