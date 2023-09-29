@@ -4,10 +4,8 @@
 int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path)
 {
     int N = G.n; // Number of nodes in the graph
-    int p = 0;
-    std::string pw = "";
+    bool sltn = false;
     std::vector<bool> visit(N, false);
-    std::vector<int> trace(N, -1);
     Stack<int> s;
     s.push(start);
     visit[start] = true;
@@ -16,6 +14,7 @@ int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
         int st = s.pop();
         if (st == destination)
         {
+            sltn = true;
             break;
         }
         visit[st] = true;
@@ -28,14 +27,19 @@ int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
             {
                 visit[v] = true;
                 s.push(v);
+                if (v == destination){
+                    path.push_back(v);
+                }
             }
         }
     }
-    int u = destination;
-    while (u != -1) {
-        path.push_back(u);
-        u = trace[u];
+    std::reverse(path.begin(),path.end());
+    if(!sltn){
+        std::cout<<"These buildings do not appear to be connected."<<std::endl;
+        return -1;
+    }else if(numberOfBuilding>=path.size()){
+        return numberOfBuilding;
+    }else{
+        return path.size();
     }
-
-    return 0; // You do not need to count the number of paths in this question, therefore, just simply return 0
 }
