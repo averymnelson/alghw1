@@ -30,11 +30,11 @@
 
 PROJECT_DIR=.
 
-MINGW_BIN=C:/Homework/mingw64/bin
+MINGW_BIN=C:/mingw64/bin
 CFLAGS=-I${PROJECT_DIR}/include/
 CC=${MINGW_BIN}/gcc.exe
 CXX=${MINGW_BIN}/g++.exe
-OPENCV_DIR=C:/Homework/opencv/build/install
+OPENCV_DIR=C:/opencv/build/install
 
 # Using OpenCV for Visualization
 OPENCV=1
