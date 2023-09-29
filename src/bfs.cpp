@@ -2,6 +2,7 @@
 #include <vector>
 
 int bfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path) {
+    path.clear();
     int N = G.n;
     bool sltn = false;
     std::vector<int> stpath;

@@ -3,7 +3,7 @@
 
 int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path)
 {
-    int N = G.n; // Number of nodes in the graph
+    int N = G.n;
     bool sltn = false;
     std::vector<bool> visit(N, false);
     Stack<int> s;
@@ -36,10 +36,18 @@ int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<
     std::reverse(path.begin(),path.end());
     if(!sltn){
         std::cout<<"These buildings do not appear to be connected."<<std::endl;
-        return -1;
+        //return -1;
     }else if(numberOfBuilding>=path.size()){
-        return numberOfBuilding;
-    }else{
-        return path.size();
+        std::cout<<"Path length greater than number of buildings."<<std::endl;
+        path.clear();
+        path.shrink_to_fit();
+        for (int i=0; i<numberOfBuilding; i++){
+            path.push_back(-1);
+        }
+        // return numberOfBuilding;
     }
+    // else{
+    //     return path.size();
+    // }
+    return 0;
 }
