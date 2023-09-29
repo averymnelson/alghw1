@@ -4,50 +4,38 @@
 int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path)
 {
     int N = G.n;
-    bool sltn = false;
-    std::vector<bool> visit(N, false);
+    std::vector<int> distance(N, 1000000);
+    std::vector<int> trace(N, -1);
     Stack<int> s;
     s.push(start);
-    visit[start] = true;
+    distance[start] = 1;
     while (!s.empty())
     {
         int st = s.pop();
-        if (st == destination)
+        if (st == destination && distance[st] <= numberOfBuilding)
         {
-            sltn = true;
             break;
         }
-        visit[st] = true;
         int nAdjnodes = G.e[st].size();
         LinkedListNode<int> *p = G.e[st].getRoot();
         for (int i = 0; i < nAdjnodes; i++, p = p->next)
         {
             int v = p->value;
-            if (!visit[v])
+            if (distance[st] + 1 < distance[v])
             {
-                visit[v] = true;
                 s.push(v);
-                if (v == destination){
-                    path.push_back(v);
-                }
+                distance[v] = distance[st] + 1;
+                trace[v] = st;
             }
         }
     }
-    std::reverse(path.begin(),path.end());
-    if(!sltn){
-        std::cout<<"These buildings do not appear to be connected."<<std::endl;
-        //return -1;
-    }else if(numberOfBuilding>=path.size()){
-        std::cout<<"Path length greater than number of buildings."<<std::endl;
-        path.clear();
-        path.shrink_to_fit();
-        for (int i=0; i<numberOfBuilding; i++){
-            path.push_back(-1);
-        }
-        // return numberOfBuilding;
+    int u = destination;
+    while (u != -1) {
+        path.push_back(u);
+        u = trace[u];
     }
-    // else{
-    //     return path.size();
-    // }
+
+    std::reverse(path.begin(),path.end());
+    
     return 0;
 }

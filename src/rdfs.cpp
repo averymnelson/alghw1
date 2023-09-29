@@ -1,62 +1,47 @@
 #include <search.hpp>
 
-int rdfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path)
+int rdfsutil(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path, std::vector<int> &distance)
 {
-    path.clear();
+    path.push_back(start);
     int N = G.n;
-    std::vector<bool> visit(N, false);
-    std::vector<int> numps(N, 0);
-    rdfsutil(G, start, destination, numberOfBuilding, path, visit, numps);
-    return 0; // You do not need to count the number of paths in this question, therefore, just simply return 0
-}
-int rdfsutil(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path, std::vector<bool> &visit, std::vector<int> &numps)
-{
-    int N = G.n;
-    visit[start] = true;
+    distance[start] = path.size();
     if (path.size() > numberOfBuilding)
     {
         std::cout << "Path length greater than number of buildings." << std::endl;
+        path.pop_back();
         return 0;
     }
-    if (start == destination)
+    if (start == destination)      
     {
-        path.push_back(start);
-    }else{
+        if (distance[start] <= numberOfBuilding)
+            return 1;
+        else {
+            path.pop_back();
+            return 0;
+        }
+    }
+    
     int numberOfAdjacencyNodes = G.e[start].size();
     LinkedListNode<int> *p = G.e[start].getRoot();
     for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next)
     {
         int v = p->value;
-        if (!visit[v])
+        if ((distance[start] + 1) < distance[v])
         {
-            rdfsutil(G, v, destination, numberOfBuilding, path, visit, numps);
+            int flag = rdfsutil(G, v, destination, numberOfBuilding, path, distance);
+            if (flag == 1)
+                return 1;
         }
     }
-    }
-    numps[path.size()]++;
-    path.clear();
+    path.pop_back();
     return 0;
 }
 
-// int numberOfAdjacencyNodes = G.e[u].size();
-// LinkedListNode<int> *p = G.e[u].getRoot();
-// for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next)
-// {
-//     int v = p->value;
-//     if (!visit[v])
-//     {
-//         int flag = rdfs(G, v, destination, numberOfBuilding, path);
-//         if (flag == 1)
-//         {
-//             return 1;
-//         }
-//     }
-// }
-// if(!sltn){
-//     std::cout<<"These buildings do not appear to be connected."<<std::endl;
-//     return -1;
-// }else if(numberOfBuilding>=path.size()){
-//     return numberOfBuilding;
-// }else{
-//     return path.size();
-// }
+int rdfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path)
+{
+    path.clear();
+    int N = G.n;
+    std::vector<int> distance(N, 1000000);
+    rdfsutil(G, start, destination, numberOfBuilding, path, distance);
+    return 0;
+}
