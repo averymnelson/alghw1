@@ -1,9 +1,9 @@
 #include <graph.hpp>
 #include <search.hpp>
 
-void DFS(std::vector<int> &disc, std::vector<int> &low, std::vector<int> &visited, std::vector<int> parent, vertex)
+void DFS(std::vector<int> &disc, std::vector<int> &low, std::vector<int> &visited, std::vector<int> parent, int vertex){
         visited[vertex] = true;
-        int temp=time+1;
+        int temp = time + 1;
         disc[vertex] = temp;
         low[vertex] = temp;
         int child = 0;
@@ -16,7 +16,7 @@ void DFS(std::vector<int> &disc, std::vector<int> &low, std::vector<int> &visite
                                 child = child + 1;
                                 parent[i] = vertex;
                                 DFS(disc, low, visited, parent, i, time+1);
-                                low[vertex] = minimum(low[vertex], low[i]);
+                                low[vertex] = min(low[vertex], low[i]);
                                 if (low[i] > disc[vertex]){
                                         std::cout<<vertex<<" "<<i<<std::endl;
                                         //print vertex, i //bridge
@@ -26,6 +26,7 @@ void DFS(std::vector<int> &disc, std::vector<int> &low, std::vector<int> &visite
                                 low[vertex] = minimum(low[vertex], disc[i])
                         }
         }
+}
 
 void findArticulationPointsAndBridges(Graph &G, std::vector<int> &articulationPoints, std::vector<std::pair<int, int>> &bridges)
 {
