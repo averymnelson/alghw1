@@ -7,7 +7,7 @@ int rdfsutil(Graph &G, int start, int destination, int numberOfBuilding, std::ve
     distance[start] = path.size();
     if (path.size() > numberOfBuilding)
     {
-        std::cout << "Path length greater than number of buildings." << std::endl;
+        //std::cout << "Path length greater than number of buildings." << std::endl;
         path.pop_back();
         return 0;
     }
