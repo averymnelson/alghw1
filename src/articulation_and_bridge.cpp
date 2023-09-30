@@ -1,21 +1,35 @@
 #include <graph.hpp>
 #include <search.hpp>
-/*
-To iterate over the adjancy nodes of u, you can use the following template code 
-int numberOfAdjacencyNodes = G.e[u].size(); // Get number of adjancy nodes of u 
-LinkedListNode<int> *p = G.e[u].getRoot(); // Get the head point of the linked list
-for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next) { // iterate over each node
-    int v = p->value; // v is the adjvancy node of u
-    // YOUR CODE HERE
-}
 
+void DFS(std::vector<int> &disc, std::vector<int> &low, std::vector<int> &visited, std::vector<int> parent, vertex)
+        visited[vertex] = true;
+        int temp=time+1;
+        disc[vertex] = temp;
+        low[vertex] = temp;
+        int child = 0;
+        int nAdjnodes = G.e[vertex].size();
+        LinkedListNode<int> *p = G.e[vertex].getRoot();
+        for (int i = 0; i < nAdjnodes; i++, p = p->next)
+        {
+            int v = p->value;
+                        if (!visited[i]){
+                                child = child + 1;
+                                parent[i] = vertex;
+                                DFS(disc, low, visited, parent, i, time+1);
+                                low[vertex] = minimum(low[vertex], low[i]);
+                                if (low[i] > disc[vertex]){
+                                        std::cout<<vertex<<" "<<i<<std::endl;
+                                        //print vertex, i //bridge
+                                }
+                        }
+                        else if (parent[vertex] != i){
+                                low[vertex] = minimum(low[vertex], disc[i])
+                        }
+        }
 
-To create a pair of node u and v, you can use the following template
-std::pair<int, int> bride(u, v);
- 
-*/
-
-void findArticulationPointsAndBridges(Graph &G, std::vector<int> &articulationPoints, std::vector<std::pair<int, int> > &bridges) {
+void findArticulationPointsAndBridges(Graph &G, std::vector<int> &articulationPoints, std::vector<std::pair<int, int>> &bridges)
+{
     int n = G.n; // Number of Nodes
-    // YOUR CODE HERE
+    int time = 0;
+    DFS(time, time, visited, parent, vertex)
 }

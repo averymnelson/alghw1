@@ -4,8 +4,6 @@
 int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path)
 {
     int N = G.n;
-    std::vector<int> distance(N, 1000000);
-    std::vector<int> trace(N, -1);
     Stack<int> s;
     s.push(start);
     distance[start] = 1;
