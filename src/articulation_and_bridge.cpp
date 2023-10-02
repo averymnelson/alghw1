@@ -12,38 +12,32 @@ void artdfs(Graph &G, int curr, int d, std::vector<int> &low, std::vector<int> &
         for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next)
         {
                 int v = p->value;
+                parent[v] = curr;
+                depth[v]=d;
                 if (depth[v] == -1)
                 {
                         children++;
-                        parent[v] = curr;
                         artdfs(G, v, d, low, depth, parent, articulationPoints, bridges);
-                        if (low[curr] >= low[v])
-                        {
-                                low[curr] = low[v];
-                        }
-                        //add to articulation points list
-                        if ((parent[v] != -1)&&(low[v] >= depth[curr]))
+                        low[curr]  = std::min(low[curr], low[v]);
+                        if (depth[curr] < low[v])
                         {
                                 articulationPoints.push_back(curr);
                         }
-
                 }
-                else if (parent[v] != curr)
+                else
                 {
-                        if (depth[v] <= low[curr])
-                        {
-                                low[curr] = depth[v];
-                        }
+                        low[curr] = std::min(low[curr], depth[v]);
                 }
-                //add to bridges
-                if (low[v] > depth[curr])
+
+                if (depth[curr] < low[v])
                 {
                         std::pair<int, int> bride(curr, v);
                         bridges.push_back(bride);
                 }
-        }
-        if ((parent[curr]== -1)&&children>1){
-             articulationPoints.push_back(curr);   
+                else
+                {
+                        low[curr] = std::min(low[curr], depth[v]);
+                }
         }
 }
 
