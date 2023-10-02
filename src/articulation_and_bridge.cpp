@@ -31,7 +31,7 @@
 //         }
 // }
 
-void findArticulationPointsAndBridges(Graph &G, std::vector<int> &articulationPoints, std::vector<std::pair<int, int>> &bridges)
+void findArticulationPointsAndBridges(Graph &G, std::vector<int> &articulationPoints, std::vector<std::pair<int, int> > &bridges)
 {
 //     int n = G.n; // Number of Nodes
 //     int time = 0;
