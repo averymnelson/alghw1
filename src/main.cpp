@@ -42,6 +42,8 @@ bool testBST() {
 
     std::cout << "Maximum value in BST: ";
     BSTNode *node = bst.popMaximum();
+    std::cout<<node->key;
+
 
     if (node == NULL || node->key != 9)
         throw std::invalid_argument("\n[ERROR MESSAGE]. Your Pop Maximum Method in BST is Incorrect.\n");

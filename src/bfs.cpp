@@ -7,11 +7,13 @@ void bfs(Graph &G, int start, int destination) {
     G.reset();
 
     G.distance(start) = 0;
+    //first: bst method insert
     bst.insert(0, start);
     
     G.setTrace(start, -1);
 
     while (true) {
+        //Second: bst method popMinimun
         BSTNode *node = bst.popMinimum();
 
         int u = node->meta;

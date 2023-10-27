@@ -21,7 +21,7 @@ CFLAGS=-I${PROJECT_DIR}/include/ -std=c++11
 FILES=linked_list.cpp graph.cpp queue.cpp stack.cpp bfs.cpp bst.cpp main.cpp
 
 # Using OpenCV for Visualization
-OPENCV=1
+OPENCV=0
 OPENCV4=0
 ifeq ($(OS),Windows_NT)
 	ifeq ($(OPENCV), 1)
