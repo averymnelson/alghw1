@@ -63,3 +63,4 @@ void Queue<T>::push(T value) {
 }
 
 template class Queue<int>;
+template class Queue<std::pair<int, int> >;

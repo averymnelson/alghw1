@@ -59,3 +59,4 @@ void Stack<T>::push(T value) {
 }
 
 template class Stack<int>;
+template class Stack<std::pair<int, int> >;

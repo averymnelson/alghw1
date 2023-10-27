@@ -1,59 +1,43 @@
 #include <search.hpp>
-#include <vector>
+#include <bst.hpp>
 
-int bfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path) {
-    path.clear();
-    int N = G.n;
-    bool sltn = false;
-    int u = 0; 
+void bfs(Graph &G, int start, int destination) {
+    BST bst;
 
-    std::vector<bool> visit(N, false);
-    std::vector<int> dist(N, N);
-    std::vector<int> paths(N, 0);
-    std::vector<int> trace(N, -1);
+    G.reset();
+
+    G.distance(start) = 0;
+    bst.insert(0, start);
     
-    Queue<int> q;
-    q.push(start);
-    visit[start] = true;
-    paths[start]=1;
-    while(!q.empty()){
-        int top = q.pop();
-        if(top == destination){
-            sltn = true;
+    G.setTrace(start, -1);
+
+    while (true) {
+        BSTNode *node = bst.popMinimum();
+
+        int u = node->meta;
+        int dist = node->key;
+        delete node;
+
+        if (G.distance(u) != dist)
+            continue;
+
+        G.setVisited(u);
+
+        if (u == destination)
             break;
-        }
-        
-        int numberOfAdjacencyNodes = G.e[top].size();
-        LinkedListNode<int> *p = G.e[top].getRoot();
-        for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next) 
-        {
-            u = top;
-            int v = p->value;
 
-            if(!visit[v]){
-                visit[v] = true;
-                q.push(v);
-                trace[v] = top;
-                paths[v] = paths[top];
-                dist[v] = dist[top] + 1;
-            }
-            else if(dist[v] == (dist[u]+1)){
-                paths[v] = (paths[u]+paths[v]);
+        int numberOfAdjacencyNodes = G.e[u].size();
+        LinkedListNode<std::pair<int, int> > *p = G.e[u].getRoot();
+        for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next) {
+            int v = p->value.first;
+            int w = p->value.second;
+            if (G.isVisited(v))
+                continue;
+            if (dist + w < G.distance(v)) {
+                G.distance(v) = dist  + w ;
+                bst.insert(dist + w, v);
+                G.setTrace(v, u);   
             }
         }
-    }
-
-    if (!sltn){
-        std::cout<<"These buildings do not appear to be connected."<<std::endl;
-        return -1;
-    }else{
-    u = destination;
-    while (u != -1) {
-        path.push_back(u);
-        u = trace[u];
-    }
-    std::reverse(path.begin(),path.end());
-
-    return paths[destination]; 
     }
 }

@@ -6,21 +6,33 @@
 #include <queue.hpp>
 
 class Graph {
-    public:
+    private:
         int n; // Number of vertices 
-        std::vector<LinkedList<int> > e; // Adjacent list 
+        std::vector<LinkedList<std::pair<int, int> > > e; // Adjacent list 
+        std::vector<int> traces;
+        std::vector<bool> visited;
+        std::vector<int> dist;
     public:
         Graph(int n);
         ~Graph();
-        void insertEdge(int u, int v, bool directed = false);
+        void insertEdge(int u, int v, int w, bool directed = false);
         
         void reset();
 
-        int search(int start, int destination, int numberOfBuilding, int (*searchfn)(Graph&, int, int, int, std::vector<int>&), std::vector<int> &path);
+        int &distance(int u);
 
-        friend int bfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path);
-        friend int dfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path);
-        friend int rdfs(Graph &G, int start, int destination, int numberOfBuilding, std::vector<int> &path);
-        friend void findArticulationPointsAndBridges(Graph &G, std::vector<int> &articulationPoints, std::vector<std::pair<int, int> > &bridges);
+        bool isVisited(int u);
+        void setVisited(int u);
+        
+        int trace(int u);
+        void setTrace(int u, int v);
+
+        std::vector<int> search(int start, int destination, void (*searchfn)(Graph&, int, int));
+
+        friend void bfs(Graph &G, int start, int destination);
+        friend void dfs(Graph &G, int start, int destination);
+        friend void rdfs(Graph &G, int start, int destination);
+        friend void searchOnCampus(std::string start, std::string destination);
+
 };
 

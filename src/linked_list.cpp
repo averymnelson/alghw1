@@ -92,4 +92,5 @@ int LinkedList<T>::size() {
 
 template class LinkedListNode<int>;
 template class LinkedList<int>;
-
+template class LinkedList<std::pair<int, int> >;
+template class LinkedListNode<std::pair<int, int> >;

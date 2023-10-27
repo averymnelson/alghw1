@@ -5,74 +5,222 @@
 #include <string>
 #include <map>
 #include <fstream>
+#include <stdexcept>
+#include <cmath>
 #include <search.hpp>
+#include <bst.hpp>
 
 #ifdef OPENCV
 #include <opencv2/opencv.hpp>
 #endif
 
-bool testGraph() {
-    Graph G(7);
+bool testBST() {
+    BST bst;
+    for (int i = 0; i <= 9; ++i) {
+        std::cout << "Insert " << i << " into BST. "; 
+        bst.insert(i);
 
-    G.insertEdge(0, 1);
-    G.insertEdge(0, 5);
-    G.insertEdge(5, 6);
-    G.insertEdge(1, 2);
-    G.insertEdge(1, 2);
-    G.insertEdge(2, 3);
-    G.insertEdge(3, 4);
-    G.insertEdge(2, 4);
-    G.insertEdge(6, 4);
-
-    std::vector<std::string> algNames; algNames.clear();
-    algNames.push_back("bfs");
-    algNames.push_back("rdfs");
-    algNames.push_back("dfs");
-    int numberOfBuilding = 4;
-
-    for (int idx = 0; idx < algNames.size(); ++idx) {
-        std::string algName = algNames[idx];
-
-        int (*searchfn)(Graph &, int, int, int, std::vector<int>&);
-        if (algName == "bfs")
-            searchfn = bfs;
-        else if (algName == "dfs")
-            searchfn = dfs;
-        else
-            searchfn = rdfs;
-
-        std::vector<int> path; path.clear();
-
-        int count = G.search(0, 4, numberOfBuilding, searchfn, path);
-
-        if (path.size() != 0 && path.front() == 0 && path.back() == 4) {
-            std::cout << "Path from 0 to 4 by " << algName << ": " ;
-            for (int i = 0; i < path.size(); ++i) 
-                std::cout << path[i] << " ";
-            std::cout << "\n";
-            std::cout << "Number of buildings in the path: " << path.size() << std::endl;
-            if (! (algName == "bfs" || path.size() <= numberOfBuilding) ) {
-                 std::cout << "[WARNING] The number of building in your path including start and destination produced by your " << algName << " was out of the number of buildings allowed in the requirement. You will not receive a full grade in this case. You may have to improve your implementation!" << std::endl;
-
-            }
-            if ( algName == "bfs") {
-                std::cout << "The total number of shortest paths: " << count << std::endl;   
-                if (count != 2) {
-                    std::cout << "[WARNING] The number of shorest path produced by your " << algName << " was incorrect. There should be only two paths. You will not receive a full grade in this case. You may have to improve your implementation!" << std::endl;
-                }
-            }
-            std::cout << std::endl;
-            
-        } else {
-            std::cout << "It seems that your " << algName << " was implemented incorrectly" << std::endl;
-            return false;
+        std::cout << "Find " << i << ": ";  
+        if (bst.find(i) != NULL && bst.find(i)->key == i)
+            std::cout << "Found " << i << " in BST. ";
+        else {
+            throw std::invalid_argument("\n[ERROR MESSAGE]. Your Insert or Find Method in BST is Incorrect.\n");
         }
+
+        
+        std::cout << "Find " << i+1 << ": ";  
+        if (bst.find(i+1) == NULL)
+            std::cout << "Not found " << i+1 << " in BST" << std::endl;
+        else {
+            throw std::invalid_argument("\n[ERROR MESSAGE]. Your Insert or Find Method in BST is Incorrect.\n");
+        }
+
     }
-                
+
+    std::cout << "Insert 9 into BST." << std::endl;
+    bst.insert(9);
+
+    std::cout << "Maximum value in BST: ";
+    BSTNode *node = bst.popMaximum();
+
+    if (node == NULL || node->key != 9)
+        throw std::invalid_argument("\n[ERROR MESSAGE]. Your Pop Maximum Method in BST is Incorrect.\n");
+    else
+        std::cout << node->key << ". ";
+    delete node;
+
+    std::cout << "Find 9: ";  
+    if (bst.find(9) != NULL)
+        std::cout << "Found 9 in BST (We have two values of 9 in BST)" << std::endl;
+    else {
+        throw std::invalid_argument("\n[ERROR MESSAGE]. Your Pop Maximum or Find Method in BST is Incorrect.\n");
+    }
+
+    
+    std::cout << "Mininum value in BST: ";
+    node = bst.popMinimum();
+
+    if (node == NULL || node->key != 0)
+        throw std::invalid_argument("\n[ERROR MESSAGE]. Your Pop Minimum Method in BST is Incorrect.\n");
+    else
+        std::cout << node->key << ". "; 
+    delete node;
+    
+    std::cout << "Find 0: ";  
+    if (bst.find(0) == NULL)
+        std::cout << "Not found 0 in BST" << std::endl;
+    else {
+        throw std::invalid_argument("\n[ERROR MESSAGE]. Your Pop Maximum or Find Method in BST is Incorrect.\n");
+    }
+
+    
+    for (int i = 1; i <= 8; ++i) {
+        std::cout << "Remove " << i << " out of BST. ";
+        bst.remove(i);
+
+        std::cout << "Find " << i << ": ";  
+        if (bst.find(i) == NULL) 
+            std::cout << "Not found " << i << " in BST. ";
+        else
+            throw std::invalid_argument("\n[ERROR MESSAGE]. Your Remove or Find Method in BST is Incorrect.\n");
+
+
+        std::cout << "Find " << i+1 << ": ";  
+        if (bst.find(i+1) != NULL && bst.find(i+1)->key == i+1)
+            std::cout << "Found " << i+1 << " in BST" << std::endl;
+        else
+            throw std::invalid_argument("\n[ERROR MESSAGE]. Your Remove or Find Method in BST is Incorrect.\n");
+    }
+    
+    std::cout << "Remove 9 out of BST. "; 
+    bst.remove(9);
+    std::cout << "Find " << 9 << ": ";  
+    if (bst.find(9) == NULL) 
+        std::cout << "Not found 9 in BST" << std::endl;
+    else
+        throw std::invalid_argument("\n[ERROR MESSAGE]. Your Remove or Find Method in BST is Incorrect.\n");
+
+
     return true;
 }
 
-bool searchOnCampus(std::string start = "BELL", std::string destination = "HAPG") {
+#ifdef GRADUATE
+
+#include <avl.hpp> 
+
+bool testAVL() {
+    AVL bst;
+    for (int i = 0; i <= 9; ++i) {
+        std::cout << "Insert " << i << " into AVL. ";
+        bst.insert(i);
+
+        std::cout << "Find " << i << ": ";  
+        if (bst.find(i) != NULL && bst.find(i)->key == i)
+            std::cout << "Found " << i << " in AVL. ";
+        else {
+            throw std::invalid_argument("\n[ERROR MESSAGE]. Your Insert or Find Method (Find Method is called from the base class) in AVL is Incorrect.\n");
+        }
+
+        
+        std::cout << "Find " << i+1 << ": ";  
+        if (bst.find(i+1) == NULL)
+            std::cout << "Not found " << i+1 << " in AVL" << std::endl;
+        else {
+            throw std::invalid_argument("\n[ERROR MESSAGE]. Your Insert or Find Method (Find Method is called from the base class) in AVL is Incorrect.\n");
+        }
+
+    }
+
+    
+    for (int i = 0; i <= 8; ++i) {
+        std::cout << "Remove " << i << " out of AVL. ";
+        bst.remove(i);
+
+        std::cout << "Find " << i << ": ";  
+        if (bst.find(i) == NULL) 
+            std::cout << "Not found " << i << " in BST. ";
+        else
+            throw std::invalid_argument("\n[ERROR MESSAGE]. Your Remove or Find Method (Find Method is called from the base class) in AVL is Incorrect.\n");
+
+
+        std::cout << "Find " << i+1 << ": ";  
+        if (bst.find(i+1) != NULL && bst.find(i+1)->key == i+1)
+            std::cout << "Found " << i+1 << " in BST" << std::endl;
+        else
+            throw std::invalid_argument("\n[ERROR MESSAGE]. Your Remove or Find Method (Find Method is called from the base class) in AVL is Incorrect.\n");
+    }
+    
+    std::cout << "Remove 9 out of BST. ";
+    bst.remove(9);
+    std::cout << "Find 9: ";  
+    if (bst.find(9) == NULL) 
+        std::cout << "Not found 9 in BST" << std::endl;
+    else
+        throw std::invalid_argument("\n[ERROR MESSAGE]. Your Remove or Find Method (Find Method is called from the base class) in AVL is Incorrect.\n");
+
+    return true;
+}
+
+#endif  
+
+bool testGraph() {
+    Graph G(6);
+    G.insertEdge(0, 1, 1);
+    G.insertEdge(1, 2, 2);
+    G.insertEdge(1, 3, 3);
+    G.insertEdge(2, 4, 4);
+    G.insertEdge(4, 3, 5);
+    G.insertEdge(4, 5, 6);
+
+
+    std::cout << "Shortest path from 0 to 5 by " << ": " ;
+    std::vector<int> path = G.search(0, 5, bfs);
+    for (int i = 0; i < path.size(); ++i) 
+        std::cout << path[i] << " ";
+    std::cout << "\n";
+    std::cout << "Total Distance: " << G.distance(5) << std::endl;
+    
+    return true;
+}
+
+#ifdef OPENCV
+void drawDashedLine(cv::Mat& img, cv::Point pt1, cv::Point pt2,
+                    cv::Scalar color, int thickness, std::string style,
+                    int gap) {
+  float dx = pt1.x - pt2.x;
+  float dy = pt1.y - pt2.y;
+  float dist = std::hypot(dx, dy);
+
+  std::vector<cv::Point> pts;
+  for (int i = 0; i < dist; i += gap) {
+    float r = static_cast<float>(i / dist);
+    int x = static_cast<int>((pt1.x * (1.0 - r) + pt2.x * r) + .5);
+    int y = static_cast<int>((pt1.y * (1.0 - r) + pt2.y * r) + .5);
+    pts.emplace_back(x, y);
+  }
+
+  int pts_size = pts.size();
+
+  if (style == "dotted") {
+    for (int i = 0; i < pts_size; ++i) {
+      cv::circle(img, pts[i], thickness, color, -1);
+    }
+  } else {
+    cv::Point s = pts[0];
+    cv::Point e = pts[0];
+
+    for (int i = 0; i < pts_size; ++i) {
+      s = e;
+      e = pts[i];
+      if (i % 2 == 1) {
+        cv::line(img, s, e, color, thickness);
+      }
+    }
+  }
+}
+#endif
+
+void searchOnCampus(std::string start = "BELL", std::string destination = "HAPG") {
     std::ifstream reader("assets/map_info.txt");
     int n, m;
     reader >> n >> m;
@@ -90,215 +238,106 @@ bool searchOnCampus(std::string start = "BELL", std::string destination = "HAPG"
         index2name[index] = name;
     }
 
-    std::vector<std::string> algNames; algNames.clear();
-    algNames.push_back("bfs");
-    algNames.push_back("rdfs");
-    algNames.push_back("dfs");
-
     Graph G(n);
+
     for (int i = 0; i < m; ++i) {
         int u, v;
         reader >> u >> v;
-        G.insertEdge(u, v);
+        int dx = xs[u] - xs[v];
+        int dy = ys[u] - ys[v];
+        int w = (int)sqrt(dx * dx + dy * dy);
+        G.insertEdge(u, v, w);
     }
 
-    int numberOfBuilding = 27;
-    std::vector<std::vector<int> > paths;
+    std::vector<int> path = G.search(name2index[start], name2index[destination], bfs);
 
-    for (int idx = 0; idx < algNames.size(); ++idx) {
+    std::cout << "Shorest path from " << start  << " to " << " detination: " << start ;
+    for (int i = 1; i < path.size(); ++i)
+        std::cout << " -> " << index2name[path[i]];
+    
+    std::cout << "\n";
+    
+    std::cout << "Total Distance: " << G.distance(name2index[destination]) << std::endl;
 
-        std::string algName = algNames[idx];
-        int (*searchfn)(Graph &, int, int, int, std::vector<int> &);
-        if (algName == "bfs")
-            searchfn = bfs;
-        else if (algName == "dfs")
-            searchfn = dfs;
-        else
-            searchfn = rdfs;
-
-        std::vector<int> path; path.clear();
-        int count = G.search(name2index[start], name2index[destination], numberOfBuilding, searchfn, path);
-
-        if (path.size() != 0 && path.front() == name2index[start] && path.back() == name2index[destination]) {
-            std::cout << "Path from " << start  << " to " << destination << " by the " << algName << " algorithm: " << start ;
-            for (int i = 1; i < path.size(); ++i)
-                std::cout << " -> " << index2name[path[i]];
-            std::cout << "\n";
-
-            std::cout << "Number of buildings in the path: " << path.size() << std::endl;
-
-            if (! (algName == "bfs" || path.size() <= numberOfBuilding) ) {
-                std::cout << "[WARNING] The number of building in your path including start and destination produced by your " << algName << " was out of the number of buildings allowed in the requirement. You will not receive a full grade in this case. You may have to improve your implementation!" << std::endl;
-            }
-
-            if ( algName == "bfs") {
-                std::cout << "The total number of shortest paths: " << count << std::endl;   
-            }
-
-            
-            paths.push_back(path);
-            std::cout << std::endl;
-        } else {
-            std::cout << "It seems that your " << algName << " was implemented incorrectly" << std::endl;
-            return false;
+#ifdef OPENCV
+    cv::Mat image = cv::imread("assets/map.png");
+    for (int i = 0; i < n; ++i) {
+        cv::circle(image, cv::Point(xs[i], ys[i]), 5, cv::Scalar(255, 0, 0), -1);
+        if (index2name[i] == start || index2name[i] == destination)
+            cv::putText(image, index2name[i],  cv::Point(xs[i], ys[i]-10),  cv::FONT_HERSHEY_DUPLEX, 0.7, cv::Scalar(255, 0, 0), 2);
+        
+    }
+    
+    for (int u = 0; u < n; ++u) {
+        int numberOfAdjacencyNodes = G.e[u].size();
+        LinkedListNode<std::pair<int, int> > *p = G.e[u].getRoot();
+        for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next) {
+            int v = p->value.first;
+            drawDashedLine(image, cv::Point(xs[u], ys[u]), cv::Point(xs[v], ys[v]), cv::Scalar(0, 0, 255), 1, "", 5);
         }
     }
-
-       
-#ifdef OPENCV
-    std::vector<cv::Mat> images;
-    for (int idx = 0; idx < algNames.size(); ++idx) {
-        std::string algName = algNames[idx];
-        std::vector<int> path = paths[idx]; 
-
-        cv::Mat image = cv::imread("assets/map.png");
-        for (int i = 0; i < n; ++i) {
-            cv::circle(image, cv::Point(xs[i], ys[i]), 10, cv::Scalar(255, 0, 0), -1);
-            cv::putText(image, index2name[i],  cv::Point(xs[i], ys[i]-10),  cv::FONT_HERSHEY_DUPLEX, 0.7, cv::Scalar(255, 0, 0), 1);
-        }   
-        for (int i = 1; i < path.size(); ++i) 
-            cv::line(image, cv::Point(xs[path[i]], ys[path[i]]), cv::Point(xs[path[i-1]], ys[path[i-1]]), cv::Scalar(0, 255, 0), 4);
-
-        images.push_back(image);
+    cv::Mat oriImage = image.clone();
+    std::cout << "Press esc or Ctrl + C to stop the program" << std::endl;
+    while (true) {
+        image = oriImage.clone();
+        for (int i = 0; i < path.size(); ++i) {
+            if (i > 0) 
+                cv::line(image, cv::Point(xs[path[i]], ys[path[i]]), cv::Point(xs[path[i-1]], ys[path[i-1]]), cv::Scalar(0, 255, 0), 4);
+            cv::imshow("Shorest path from " + start + " to " + destination + " (Press esc to exit).", image);
+            int time;
+            if (i+1 == path.size())
+                time = 2000;
+            else
+                time = 400;
+            if (cv::waitKey(time) == 27)
+                break;
+        }
     }
-    cv::imshow("BFS", images[0]);
-    cv::imshow("Recursive DFS", images[1]);
-    cv::imshow("DFS", images[2]);
-    cv::waitKey(0);
 
 #else
     std::cout << "You have to use OpenCV to visualize your map road\n";
 #endif
 
-    return true;
-}
-
-bool testArticulationPointsAndBridges() {
-    std::cout << "IF YOU ARE UNDERGRAD STUDENTS, PLEASE IGNORE THIS UNIT TEST OF FINDING ARTICULATION POINTS AND BRIDGES" << std::endl;
-    Graph G(17);
-    G.insertEdge(0, 1);
-    G.insertEdge(1, 2);
-    G.insertEdge(2, 3);
-    G.insertEdge(3, 5);
-    G.insertEdge(5, 4);
-    G.insertEdge(4, 0);
-    G.insertEdge(3, 6);
-    G.insertEdge(6, 7);
-    G.insertEdge(7, 9);
-    G.insertEdge(9, 10);
-    G.insertEdge(10, 11);
-    G.insertEdge(11, 8);
-    G.insertEdge(8, 6);
-    G.insertEdge(3, 12);
-    G.insertEdge(12, 13);
-    G.insertEdge(13, 14);
-    G.insertEdge(14, 15);
-    G.insertEdge(15, 16);
-    G.insertEdge(16, 12);
-
-    std::vector<int> articulationPoints; articulationPoints.clear();
-    std::vector<std::pair<int, int> > bridges; bridges.clear(); 
-
-    findArticulationPointsAndBridges(G, articulationPoints, bridges);
-    
-    if (articulationPoints.size() != 3) {
-        std::cout << "The number of articulation points is incorrect! There should be 3 articulation points." << std::endl;
-        return false;
-    }
-    if (bridges.size() != 2) {
-        std::cout << "The number of bridges is incorrect! There should be 2 bridges." << std::endl;
-        return false;
-    }
-
-    std::cout << "List of Articulation Points: ";
-    for (int i = 0; i < articulationPoints.size(); ++i)
-        std::cout << articulationPoints[i] << " ";
-    std::cout << std::endl;
-
-    std::cout << "List of Bridges: ";
-    for (int i = 0; i < bridges.size(); ++i)
-        std::cout << "(" << bridges[i].first  << ", " << bridges[i].second << ") ";
-    std::cout << std::endl;
-
-    return true;
 
 }
-
-bool testArticulationPointsAndBridgesOnCampus() {
-    std::cout << "IF YOU ARE UNDERGRAD STUDENTS, PLEASE IGNORE THIS UNIT TEST OF FINDING ARTICULATION POINTS AND BRIDGES ON CAMPUS" << std::endl;
-    std::ifstream reader("assets/map_info.txt");
-    int n, m;
-    reader >> n >> m;
-    std::map<std::string, int> name2index;
-    std::map<int, std::string> index2name;
-    std::vector<int> xs;
-    std::vector<int> ys;
-    for (int i = 0; i < n; ++i) {
-        int index, x, y;
-        std::string name;
-        reader >> index >> name >> x >> y;
-        xs.push_back(x);
-        ys.push_back(y);
-        name2index[name] = index;
-        index2name[index] = name;
-    }
-
-    Graph G(n);
-    for (int i = 0; i < m; ++i) {
-        int u, v;
-        reader >> u >> v;
-        G.insertEdge(u, v);
-    }
-
-    std::vector<int> articulationPoints; articulationPoints.clear();
-    std::vector<std::pair<int, int> > bridges; bridges.clear(); 
-
-    findArticulationPointsAndBridges(G, articulationPoints, bridges);
-    
-    std::cout << "List of Articulation Points on Campus: ";
-    for (int i = 0; i < articulationPoints.size(); ++i)
-        std::cout << index2name[articulationPoints[i]] << " ";
-    std::cout << std::endl;
-
-    std::cout << "List of Bridges on Campus: ";
-    for (int i = 0; i < bridges.size(); ++i)
-        std::cout << "(" << index2name[bridges[i].first]  << ", " << index2name[bridges[i].second] << ") ";
-    std::cout << std::endl;
-
-    return true;
-
-}
-
 int main(int argc, char **args) {
-    
-    if (!testArticulationPointsAndBridges()) {
-        std::cout << "Your findArticulationPointsandBridges implementation is incorrect!. If you are undergrad, please ignore this warning!" << std::endl;
-    }
 
-    std::cout << "\n";
-
-    testArticulationPointsAndBridgesOnCampus(); 
-    
-    std::cout << "\n\n";
-    
-
-    
-    std::cout << "Perform unit test on your searching implementation" << std::endl;
-    
-    if (!testGraph()) {
-        std::cout << "Your searching implementation is incorrect!" << std::endl;
+    std::cout << std::endl;
+    try {
+        std::cout << "Perform unit test on your BST implementation" << std::endl;
+        if (testBST())
+            std::cout << "Your BST implementation is correct" << std::endl;
+        else {
+            std::cout << "Your BST implementation is incorrect" << std::endl;
+            return -1;
+        }
+    } catch (std::invalid_argument &e) {
+        std::cout << e.what();
         return -1;
     }
-    
 
-    std::cout << "\n\n";
-    
-    std::cout << "Perform unit test on your searching implementation on campus map" << std::endl;
-
-    if (!searchOnCampus("RSWE", "RCED")) {
-        std::cout << "Your searching implementation is incorrect!" << std::endl;
-        return -1;
+#ifdef GRADUATE
+    try {
+        std::cout << std::endl;
+        std::cout << "Perform unit test on your AVL implementation" << std::endl;
+        if (testAVL())
+            std::cout << "Your AVL implementation is correct" << std::endl;
+        else {
+            std::cout << "Your AVL implementation is incorrect" << std::endl;
+            return -1;
+        }
+    } catch (std::invalid_argument &e) {
+        std::cout << e.what();
     }
+
+#endif
+
+
+    std::cout << std::endl;
+    std::cout << "Perform unit test on your implementation with graph" << std::endl;
+    testGraph();
     
-    return 0;
+    std::cout << std::endl;
+    searchOnCampus("RSWE", "GEAR");
+    
 }
