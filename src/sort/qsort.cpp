@@ -2,6 +2,7 @@
 #include <graph.hpp>
 
 std::string sortAlgName = "Quick Sort";
+
 template<class T>
 int partition(std::vector<T> &arr, int start, int end)
 {

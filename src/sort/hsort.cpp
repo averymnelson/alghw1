@@ -1,7 +1,6 @@
 #include <sort.hpp>
 #include <graph.hpp> 
-//Your task is to sort the list of edges in the ascending order of edge’s weight
-//extern
+
 std::string sortAlgName = "Heap Sort";
 
 template<class T>
