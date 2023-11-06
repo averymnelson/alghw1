@@ -2,10 +2,11 @@
 #include <graph.hpp> 
 //Your task is to sort the list of edges in the ascending order of edge’s weight
 //extern
+std::string sortAlgName = "Heap Sort";
+
 template<class T>
 void heapify(std::vector<T> &arr, int N, int i)
 {
- 
     // Initialize largest as root
     int largest = i;
  
@@ -41,8 +42,6 @@ void sort(std::vector<T> &array, int l, int r) {
     for (int i = N / 2 - 1; i >= 0; i--)
         heapify(array, N, i);
  
-    // One by one extract an element
-    // from heap
     for (int i = N - 1; i > 0; i--) {
  
         // Move current root to end
@@ -51,13 +50,6 @@ void sort(std::vector<T> &array, int l, int r) {
         // call max heapify on the reduced heap
         heapify(array, i, 0);
     }
-}
- 
-// Main function to do heap sort
-template<class T>
-void heapSort(std::vector<T> &arr, int N)
-{
-   
 }
  
     // Sorray array from l to r, i.e. sort array[l...r]
