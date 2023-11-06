@@ -75,7 +75,7 @@ void Graph::setTrace(int u, int v) {
 
 void Graph::insertEdge(int u, int v, int w, bool directed) {
     this->e[u].push_back(Edge(u, v, w));
-    if (not directed)
+    if (!directed)
         this->e[v].push_back(Edge(v, u, w));
 }
 
