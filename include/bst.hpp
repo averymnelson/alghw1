@@ -1,40 +1,52 @@
-#pragma once
-
 #include <iostream>
 
+template<class T>
 struct BSTNode {
-    int key;
+    T key;
     int height;
-    int meta;
     BSTNode *left;
     BSTNode *right;
 
     BSTNode();
-    BSTNode(int key, int height = 0, int meta = 0, BSTNode *left = NULL, BSTNode *right = NULL);  
+    BSTNode(T key, int height = 0, BSTNode *left = NULL, BSTNode *right = NULL);  
     ~BSTNode();
 };
 
-//Allowed to insert duplicate values
-//rule: node -> left -> key <= node -> key < right -> key
+template<class T>
 class BST {
     protected:
-        BSTNode *root;
+        BSTNode<T> *root;
+        
+        void clear(BSTNode<T> *node);
+        BSTNode<T> *find(T key, BSTNode<T> *node);
+        BSTNode<T> *findMaximum(BSTNode<T> *node);
+        BSTNode<T> *findMinimum(BSTNode<T> *node);
+        BSTNode<T> *insert(T key, BSTNode<T> *node);
+        BSTNode<T> *remove(T key, BSTNode<T> *node);
     public:
         BST();
         ~BST();
-        // Helper methods
-        void releaseHelper(BSTNode *node);
-        BSTNode* removeHelper(int key, BSTNode* node);
-        BSTNode *findHelper(int key, BSTNode *node);
-        BSTNode *insertHelper(int key, int meta, BSTNode *node);
-        BSTNode *popMaximumHelper(BSTNode *currNode, BSTNode *&maxNode);
-        BSTNode *popMinimumHelper(BSTNode *currNode, BSTNode *&minNode);
-
-        //clear method
-        BSTNode* find(int key);
-        BSTNode *popMaximum();
-        BSTNode *popMinimum();
-        BSTNode* insert(int key, int meta = 0);
-        BSTNode* remove(int key);
-        BSTNode* minChild(BSTNode* node);
+        BSTNode<T> *find(T key);
+        BSTNode<T> *findMaximum();
+        BSTNode<T> *insert(T key);
+        BSTNode<T> *remove(T key);
 };
+
+#ifdef USE_AVL
+template<class T>
+class AVL: public BST<T> {
+    private:
+        BSTNode<T> *null;
+        
+        int balanceFactor(BSTNode<T> *node);
+        void update(BSTNode<T> *node);
+        BSTNode<T> *balance(BSTNode<T> *node);
+        BSTNode<T> *rotateRight(BSTNode<T> *node);
+        BSTNode<T> *rotateLeft(BSTNode<T> *node);
+        
+        BSTNode<T> *insert(T key, BSTNode<T> *node);
+    public:
+        AVL();
+        BSTNode<T> *insert(T key);
+};
+#endif

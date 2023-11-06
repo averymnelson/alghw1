@@ -1,8 +1,5 @@
 PROJECT_DIR=.
 
-# Please edit this line to GRADUATE=1 if you are graduate students.
-GRADUATE=0
-
 ifeq ($(OS),Windows_NT)
 	# You are using Windows
 	MINGW_BIN=C:/mingw64/bin
@@ -18,10 +15,9 @@ else
 endif
 
 CFLAGS=-I${PROJECT_DIR}/include/ -std=c++11
-FILES=linked_list.cpp graph.cpp queue.cpp stack.cpp bfs.cpp bst.cpp main.cpp
 
 # Using OpenCV for Visualization
-OPENCV=0
+OPENCV=1
 OPENCV4=0
 ifeq ($(OS),Windows_NT)
 	ifeq ($(OPENCV), 1)
@@ -40,22 +36,26 @@ else
 	endif
 endif
 
-
-ifeq (${GRADUATE}, 1)
-	CFLAGS += -DGRADUATE=1
-	FILES += avl.cpp
-endif
+FILES=algorithms/mst.cpp graph.cpp main.cpp
 
 SRC_DIR=${PROJECT_DIR}/src/
 
 SRC_FILES=$(addprefix ${SRC_DIR}, ${FILES})
 
-all: bfs
+all: 
+	$(warning "You have to type one of the following commands")
+	$(warning "     Type 'make qsort' to run compile and run quick sort")
+	$(warning "     Type 'make msort' to run compile and run merge sort")
+	$(warning "     Type 'make hsort' to run compile and run heap sort")
 
-bfs: main
-	./bin/${PROGRAM}
+qsort: ${SRC_FILES} ${SRC_DIR}sort/qsort.cpp
+	${CXX} ${CFLAGS} $^ ${LDFLAGS} -o bin/$@ 
+	./bin/$@ 
 
-main: ${SRC_FILES}
-	${CXX} ${CFLAGS} $^ ${LDFLAGS} -o bin/${PROGRAM} 
-
+hsort: ${SRC_FILES} ${SRC_DIR}sort/hsort.cpp
+	${CXX} ${CFLAGS} $^ ${LDFLAGS} -o bin/$@ 
+	./bin/$@ 
+msort: ${SRC_FILES} ${SRC_DIR}sort/msort.cpp
+	${CXX} ${CFLAGS} $^ ${LDFLAGS} -o bin/$@ 
+	./bin/$@ 
 

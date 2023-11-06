@@ -1,10 +1,42 @@
 #include <graph.hpp>
 
+Edge::Edge() {};
+Edge::Edge(int u, int v, int w) {
+    this->u = u;
+    this->v = v;
+    this->w = w;
+}
+
+Edge::Edge(const Edge &e) {
+    this->u = e.u;
+    this->v = e.v;
+    this->w = e.w;
+}
+
+bool Edge::operator<(const Edge &second) {
+    return this->w < second.w;
+}
+
+bool Edge::operator>(const Edge &second) {
+    return this->w > second.w;
+}
+
+bool Edge::operator==(const Edge &second) {
+    return this->w == second.w;
+}
+
+bool Edge::operator>=(const Edge &second) {
+    return this->w >= second.w;
+}
+
+bool Edge::operator<=(const Edge &second) {
+    return this->w <= second.w;
+}
 
 
 Graph::Graph(int n) {
     this->n = n;
-    this->e = std::vector<LinkedList<std::pair<int, int> > >(n, LinkedList<std::pair<int, int> >());
+    this->e = std::vector<std::vector<Edge> >(n, std::vector<Edge>());
     this->reset();
 }
 
@@ -42,9 +74,9 @@ void Graph::setTrace(int u, int v) {
 
 
 void Graph::insertEdge(int u, int v, int w, bool directed) {
-    this->e[u].insert(std::pair<int, int>(v, w));
+    this->e[u].push_back(Edge(u, v, w));
     if (not directed)
-        this->e[v].insert(std::pair<int, int>(u, w));
+        this->e[v].push_back(Edge(v, u, w));
 }
 
 std::vector<int> Graph::search(int start, int destination, void (*searchfn)(Graph &, int, int)) {

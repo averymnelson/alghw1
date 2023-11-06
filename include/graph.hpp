@@ -5,10 +5,24 @@
 #include <linked_list.hpp>
 #include <queue.hpp>
 
+struct Edge {
+    int u;
+    int v;
+    int w;
+    Edge();
+    Edge(int u, int v, int w);
+    Edge(const Edge &e);
+    bool operator<(const Edge &second);
+    bool operator>(const Edge &second);
+    bool operator==(const Edge &second);
+    bool operator<=(const Edge &second);
+    bool operator>=(const Edge &second);
+};
+
 class Graph {
     private:
         int n; // Number of vertices 
-        std::vector<LinkedList<std::pair<int, int> > > e; // Adjacent list 
+        std::vector<std::vector<Edge> > e; // Adjacent list 
         std::vector<int> traces;
         std::vector<bool> visited;
         std::vector<int> dist;
@@ -30,9 +44,7 @@ class Graph {
         std::vector<int> search(int start, int destination, void (*searchfn)(Graph&, int, int));
 
         friend void bfs(Graph &G, int start, int destination);
-        friend void dfs(Graph &G, int start, int destination);
-        friend void rdfs(Graph &G, int start, int destination);
-        friend void searchOnCampus(std::string start, std::string destination);
+        friend std::vector<Edge> mst(Graph G);
 
 };
 
