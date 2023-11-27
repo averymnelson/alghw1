@@ -44,6 +44,7 @@ Graph::~Graph() {
 }
 int Graph::getN(){
     int result = n;
+    return result;
 }
 std::vector<Edge> Graph::exportEdges() {
     std::vector<Edge> edges;
