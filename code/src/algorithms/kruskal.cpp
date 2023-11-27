@@ -15,7 +15,7 @@ std::vector<Edge> constructMSTKruskal(Graph G) {
     //For each edge e in sorted list do
     std::sort(edges.begin(), edges.end());
     
-    DisjointSet d(G.n); //cannot access number of vertices?
+    DisjointSet d(G.getN()); //cannot access number of vertices?
     std::vector<Edge> mst;
 
     for(const Edge& edge : edges){

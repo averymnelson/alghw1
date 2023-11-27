@@ -42,7 +42,9 @@ Graph::Graph(int n) {
 Graph::~Graph() {
     this->e.clear();
 }
-
+int Graph::getN(){
+    int result = n;
+}
 std::vector<Edge> Graph::exportEdges() {
     std::vector<Edge> edges;
     for (int u = 0; u < this->n; ++u) {
@@ -54,7 +56,7 @@ std::vector<Edge> Graph::exportEdges() {
 
 void Graph::insertEdge(int u, int v, int w, bool directed) {
     this->e[u].push_back(Edge(u, v, w));
-    if (not directed)
+    if (!directed)
         this->e[v].push_back(Edge(v, u, w));
 }
 
