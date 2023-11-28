@@ -26,7 +26,10 @@ class Graph {
         ~Graph();
         int getN();
         void insertEdge(int u, int v, int w, bool directed = false);
-        std::vector<Edge> exportEdges(); 
+        std::vector<Edge> exportEdges();
+        //New functions added
+        std::vector<std::pair<int, int>> getAdjacencyList(int vertex);
+        int getEdgeWeight(int u, int v);
         
 
 #ifdef DIJKSTRA
