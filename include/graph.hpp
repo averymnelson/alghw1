@@ -24,6 +24,7 @@ class Graph {
     public:
         Graph(int n);
         ~Graph();
+        int getN();
         void insertEdge(int u, int v, int w, bool directed = false);
         std::vector<Edge> exportEdges(); 
         
