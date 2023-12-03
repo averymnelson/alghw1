@@ -27,6 +27,7 @@ class Graph {
         int getN();
         void insertEdge(int u, int v, int w, bool directed = false);
         std::vector<Edge> exportEdges(); 
+        std::vector<std::pair<int, int>> getAdjacenyList(int vertex);
         
 
 #ifdef DIJKSTRA
