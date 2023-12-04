@@ -23,101 +23,53 @@ std::vector<Edge> constructMSTPrim(Graph G) {
     //      Remove top: heap.pop(); (this function usually goes after the get minimum method)
     
     std::vector<bool> visit(N, false);
-    std::vector<int> dist(N, N);
-    std::vector<int> paths(N, 0);
-    std::vector<int> trace(N, -1);
-    
-    heap.push(start);
-    visit[start] = true;
-    paths[start]=1;
-    while(!heap.empty()){
+    std::vector<int> parent(N, -1);
+    std::vector<int> key(N, INT_MAX);
+    heap.push(0, -1, distance);
+    key[0]=0;
+
+    while (!heap.empty())
+    {
+        // The first vertex in pair is the minimum key
+        // vertex, extract it from priority queue.
+        // vertex label is stored in second of pair (it
+        // has to be done this way to keep the vertices
+        // sorted key (key must be first item
+        // in pair)
+        auto top = heap.top();
+        u = top.u; 
+        auto distance = top.w;
+        heap.pop();
+         
+          //Different key values for same vertex may exist in the priority queue.
+          //The one with the least key value is always processed first.
+          //Therefore, ignore the rest.
+          if(inMST[u] == true){
+            continue;
+        }
+       
+        inMST[u] = true;  // Include vertex in MST
+ 
+        // 'i' is used to get all adjacent vertices of a vertex
+        for (auto i : e[u])
+        {
+            // Get vertex label and weight of current adjacent
+            // of u.
+            int v = e[u][i].v;
+            int weight = e[u][i].w;
+ 
+            //  If v is not in MST and weight of (u,v) is smaller
+            // than current key of v
+            if (inMST[v] == false && key[v] > weight)
+            {
+                // Updating key of v
+                key[v] = weight;
+                heap.push(u, v, weight);
+                parent[v] = u;
+            }
+        }
+    }
+    for (int i = 1; i < V; ++i)
+        printf("%d - %d\n", parent[i], i);
     return mst;
 }
-top = heap.top(); 
-u = top.u; 
-distance = top.w;
-        int top = heap.pop();
-        if(top == destination){
-            sltn = true;
-            break;
-        }
-        
-        for (int i = 0; i < numberOfAdjacencyNodes; i += 1, p = p->next) 
-        {
-            u = top;
-            int v = p->value;
-
-            if(!visit[v]){
-                visit[v] = true;
-                heap.push(v);
-                trace[v] = top;
-                paths[v] = paths[top];
-                dist[v] = dist[top] + 1;
-            }
-            else if(dist[v] == (dist[u]+1)){
-                paths[v] = (paths[u]+paths[v]);
-            }
-        }
-        u = destination;
-         while (u != -1) {
-        mst.push_back(u);
-        u = trace[u];
-            }
-    std::reverse(mst.begin(),mst.end());
-
-    return mst; 
-    }
-
-    
-
-// int minKey(std::vector<int> key, std::vector<bool> inMST){
-//     int min=INT_MAX;
-//     int minIND=0;
-//     for(int v=0; v<inMST.size(); v++){
-//         if(inMST[v] == false && key[v] <min){
-//             min = key[v];
-//             minIND = v;
-//         }
-//     }
-//     return minIND;
-// }
-
-// std::vector<Edge> constructMSTPrim(Graph G) {
-//     std::vector<Edge> edges = G.exportEdges(); // Graph's edges
-//     int sum =0;
-//     // std::priority_queue< Edge, std::vector<Edge>, EdgeKeyComparison > heap;
-//     // If you want to use heap to optimize the minimum searching, you can use heap defined as above
-//     //      Insert: heap.push(Edge(u, -1, distance));
-//     //      Get Minimum: top = heap.top(); u = top.u; distance = top.w;
-//     //      Remove top: heap.pop(); (this function usually goes after the get minimum method)
-//     int size = G.getN();
-    
-//     // YOUR CODE HERE
-//     //initialize
-//     
-//     std::vector<Edge> results;
-//     std::priority_queue<Edge, std::vector<Edge>, EdgeKeyComparison > heap;
-//     //create first
-//     key[0] = 0;
-//     parent[0]=-1;
-//     //insert
-//     for (int ct=0; ct<size-1; ct++){
-//         int u = minKey(key, inMST);
-//         inMST[u] = true;
-//         auto top = heap.top(); 
-//         int u = top.u;
-//         int wt = top.w;
-//         heap.pop();
-//         for (int v =0; v<size; v++){
-//             if(inMST[v]==false && key[v]>wt){
-//                 parent[v] = u;
-//                 key[v]=wt;
-//             }
-//         }
-//     }
-//     for (int i=1; i<size; i++){
-//         std::cout<<"edge: "<<parent[i]<<std::endl;
-//     }
-//     return edges;
-// }
-
