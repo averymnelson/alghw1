@@ -12,69 +12,39 @@ struct EdgeKeyComparison {
 
 
 std::vector<Edge> constructMSTPrim(Graph G) {
-    int u = 0; 
-    std::vector<Edge> edges = G.exportEdges(); // Graph's edges
+std::vector<Edge> edges = G.exportEdges(); // Graph's edges
+    int numVertices = G.getN();
+    std::vector<bool> visited(numVertices, false);
     std::vector<Edge> mst;
-    int size = G.getN();
-    std::priority_queue< Edge, std::vector<Edge>, EdgeKeyComparison > heap;
-    // If you want to use heap to optimize the minimum searching, you can use heap defined as above
-    //      Insert: heap.push(Edge(u, -1, distance));
-    //      Get Minimum: top = heap.top(); u = top.u; distance = top.w;
-    //      Remove top: heap.pop(); (this function usually goes after the get minimum method)
     
-    std::vector<bool> visit(N, false);
-    std::vector<int> parent(N, -1);
-    std::vector<int> key(N, INT_MAX);
-    heap.push(0, -1, distance);
-    key[0]=0;
-
-    while (!heap.empty())
-    {
-        // The first vertex in pair is the minimum key
-        // vertex, extract it from priority queue.
-        // vertex label is stored in second of pair (it
-        // has to be done this way to keep the vertices
-        // sorted key (key must be first item
-        // in pair)
-        auto top = heap.top();
-        u = top.u; 
-        auto distance = top.w;
+    // Start Prim's algorithm from vertex 0 (or any other starting vertex)
+    visited[0] = true;
+    std::priority_queue<Edge, std::vector<Edge>, EdgeKeyComparison> heap;
+    for (const Edge &e : edges) {
+        if (e.u == 0) {
+            heap.push(e);
+        }
+    }
+    
+    while (!heap.empty()) {
+        Edge minEdge = heap.top();
         heap.pop();
-         
-          //Different key values for same vertex may exist in the priority queue.
-          //The one with the least key value is always processed first.
-          //Therefore, ignore the rest.
-          if(inMST[u] == true){
+        
+        if (visited[minEdge.v]) {
             continue;
         }
-       
-        inMST[u] = true;  // Include vertex in MST
- 
-        // 'i' is used to get all adjacent vertices of a vertex
-        for (auto i : e[u])
-        {
-            // Get vertex label and weight of current adjacent
-            // of u.
-            int v = e[u][i].v;
-            int weight = e[u][i].w;
- 
-            //  If v is not in MST and weight of (u,v) is smaller
-            // than current key of v
-            if (inMST[v] == false && key[v] > weight)
-            {
-                // Updating key of v
-                key[v] = weight;
-                heap.push(u, v, weight);
-                parent[v] = u;
+        
+        // Add the minimum edge to the MST
+        mst.push_back(minEdge);
+        visited[minEdge.v] = true;
+        
+        // Explore neighbors of the newly added vertex
+        for (const Edge &e : edges) {
+            if (e.u == minEdge.v && !visited[e.v]) {
+                heap.push(e);
             }
         }
     }
-    int w = destination;
-    while (w != -1) {
-        mst.push_back(w);
-        w = parent[w];
-    }
-    std::reverse(mst.begin(),mst.end());
-
+    
     return mst;
 }
