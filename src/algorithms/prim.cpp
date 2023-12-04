@@ -69,7 +69,12 @@ std::vector<Edge> constructMSTPrim(Graph G) {
             }
         }
     }
-    for (int i = 1; i < V; ++i)
-        printf("%d - %d\n", parent[i], i);
+    int w = destination;
+    while (w != -1) {
+        mst.push_back(w);
+        w = parent[w];
+    }
+    std::reverse(mst.begin(),mst.end());
+
     return mst;
 }
