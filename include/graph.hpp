@@ -20,14 +20,14 @@ struct Edge {
 class Graph {
     private:
         int n; // Number of vertices 
-        std::vector<std::vector<Edge> > e; // Adjacent list 
+        std::vector<std::vector<Edge>> e; // Adjacent list 
     public:
         Graph(int n);
         ~Graph();
         int getN();
         void insertEdge(int u, int v, int w, bool directed = false);
         std::vector<Edge> exportEdges(); 
-        std::vector<std::pair<int, int>> getAdjacenyList(int vertex);
+        //std::vector<std::pair<int, int>> getAdjList(int vertex);
         
 
 #ifdef DIJKSTRA

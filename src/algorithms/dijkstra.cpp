@@ -38,10 +38,10 @@ std::vector<int> searchShortestPath(Graph &G, int start, int destination) {
         if(u == destination){
             break;
         }
-        std::vector<std::pair<int, int>> neighbors = G.getAdjacencyList(u);
-        for(const auto& neighbor: neighbors){
-            int v = neighbor.first;
-            int weight = neighbor.second;
+        std::vector<Edge> neighbors = G.e[u];
+        for(auto neighbor: neighbors){
+            int v = neighbor.v;
+            int weight = neighbor.w;
 
             if(distance[u] + weight < distance[v]){
                 distance[v] = distance[u] + weight;

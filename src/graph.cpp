@@ -60,6 +60,7 @@ void Graph::insertEdge(int u, int v, int w, bool directed) {
         this->e[v].push_back(Edge(v, u, w));
 }
 
+
 #ifdef DIJKSTRA
 std::vector<int> Graph::search(int start, int destination) {
     return searchShortestPath(*this, start, destination); 
